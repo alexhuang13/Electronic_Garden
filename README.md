@@ -58,7 +58,7 @@
 ├── index.html           # Web 入口（仅 Vite）
 ├── public/              # 静态资源
 └── src/                 # 所有核心代码
-
+```
 ---
 
 ## src 目录：你真正会改代码的地方
@@ -76,7 +76,7 @@ src/
 ├── components/   # 通用 UI 组件
 ├── styles/       # 全局样式
 └── assets/       # 图片 / 插画 / 图标
-
+```
 ## 页面内容是在哪里实现的？
 
 在这个项目里，**“页面”本身非常轻**，它不负责绘制复杂 UI。
@@ -93,7 +93,7 @@ src/pages/
 ├── Tasks.tsx         # 📋 任务与协作 页面
 ├── Community.tsx     # 🏆 社区与激励 页面
 └── Governance.tsx    # ⚖️ 治理与台账 页面
-
+```
 ## sections：最重要、最常新增的地方
 
 `sections/` 是这个项目里 **最重要、也最常改动的目录**。
@@ -107,3 +107,4 @@ src/sections/
 ├── todoList/          # 任务 / 待办模块
 ├── quickActions/      # 快捷操作模块
 └── （以后新增的模块）
+```
