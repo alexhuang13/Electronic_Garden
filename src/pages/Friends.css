@@ -1,0 +1,301 @@
+/**
+ * 我的好友页面样式
+ */
+
+.friends-page {
+  /* 页面特定样式 */
+}
+
+.friends-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.friends-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.friends-add-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.friends-add-icon {
+  font-size: 1.25rem;
+}
+
+.friends-add-form {
+  margin-bottom: 1.5rem;
+}
+
+.friends-add-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.friends-add-form-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.friends-add-form-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.friends-add-form-close:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.friends-add-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.friends-add-form-input {
+  padding: 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.friends-add-form-input:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.friends-add-form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.friends-add-form-cancel,
+.friends-add-form-submit {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.friends-add-form-cancel {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.friends-add-form-cancel:hover {
+  background: #e5e7eb;
+}
+
+.friends-add-form-submit {
+  background: #10b981;
+  color: white;
+}
+
+.friends-add-form-submit:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.friends-empty {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--text-secondary);
+}
+
+.friends-empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.friends-empty-text {
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.friends-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.friend-card {
+  transition: all 0.2s ease;
+}
+
+.friend-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.friend-card-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.friend-avatar {
+  flex-shrink: 0;
+}
+
+.friend-avatar-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.friend-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.friend-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.friend-details {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.friend-level {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.friend-points {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+.friend-active {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.friend-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.friend-action-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.friend-action-gift {
+  background: #3b82f6;
+  color: white;
+}
+
+.friend-action-gift:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.friend-action-remove {
+  background: #ef4444;
+  color: white;
+}
+
+.friend-action-remove:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .friends-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .friends-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .friends-list {
+    grid-template-columns: 1fr;
+  }
+
+  .friend-card-content {
+    flex-wrap: wrap;
+  }
+
+  .friend-actions {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .friend-action-btn {
+    flex: 1;
+  }
+}
+

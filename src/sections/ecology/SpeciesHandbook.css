@@ -1,0 +1,448 @@
+/**
+ * 生物图鉴样式
+ */
+
+.species-handbook {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.species-handbook-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.species-stat-item {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+}
+
+.species-stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 0.5rem;
+}
+
+.species-stat-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.species-category {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.species-category-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.species-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.species-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.species-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.species-discovered {
+  border: 2px solid #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.species-undiscovered {
+  border: 2px solid var(--border-color);
+  opacity: 0.6;
+}
+
+.species-card-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.species-icon {
+  font-size: 3rem;
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.species-icon-gray {
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
+.species-discovered .species-icon {
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.species-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.species-rarity {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.species-date {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* 生物详情弹窗 */
+.species-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.species-detail-modal {
+  width: 90%;
+  max-width: 400px;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.species-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.species-detail-icon {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.species-detail-info {
+  flex: 1;
+}
+
+.species-detail-name {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.species-detail-rarity {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.species-detail-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.species-detail-close:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.species-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.species-detail-description {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.species-detail-date {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.species-detail-photo {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+}
+
+.species-detail-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* 照片上传弹窗 */
+.species-photo-upload-modal {
+  width: 90%;
+  max-width: 500px;
+  animation: slideUp 0.3s ease-out;
+}
+
+.species-photo-upload-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.species-photo-upload-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.species-photo-upload-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.species-photo-upload-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.species-photo-upload-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.species-photo-upload-info h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.species-photo-upload-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.species-photo-upload-area {
+  width: 100%;
+  min-height: 200px;
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+  transition: all 0.2s ease;
+}
+
+.species-photo-upload-area:hover {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.species-photo-upload-label {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.species-photo-upload-placeholder {
+  text-align: center;
+  padding: 2rem;
+}
+
+.species-photo-upload-icon-large {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.species-photo-upload-placeholder p {
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.species-photo-upload-hint {
+  font-size: 0.875rem !important;
+  color: var(--text-secondary) !important;
+}
+
+.species-photo-preview {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.species-photo-preview img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.species-photo-remove {
+  padding: 0.5rem 1rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.species-photo-remove:hover {
+  background: var(--bg-primary);
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.species-photo-upload-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.species-photo-upload-cancel,
+.species-photo-upload-confirm {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.species-photo-upload-cancel {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.species-photo-upload-cancel:hover {
+  background: var(--bg-primary);
+}
+
+.species-photo-upload-confirm {
+  background: #10b981;
+  color: white;
+}
+
+.species-photo-upload-confirm:hover:not(:disabled) {
+  background: #059669;
+}
+
+.species-photo-upload-confirm:disabled {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .species-handbook-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .species-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .species-detail-header {
+    flex-wrap: wrap;
+  }
+}
+

@@ -3,7 +3,7 @@ import './Navigation.css'
 
 /**
  * 导航栏组件
- * 显示 6 个主要页面的导航标签
+ * 显示主要页面的导航标签
  */
 
 export default function Navigation() {
@@ -13,6 +13,7 @@ export default function Navigation() {
     { path: '/community', icon: '🏆', label: '社区' },
     { path: '/governance', icon: '⚖️', label: '花园治理' },
     { path: '/recharge', icon: '💰', label: '商城' },
+    { path: '/friends', icon: '👥', label: '我的好友' },
     { path: '/profile', icon: '👤', label: '个人中心' },
   ]
 

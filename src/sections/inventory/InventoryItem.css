@@ -1,0 +1,129 @@
+/**
+ * 背包物品样式
+ */
+
+.inventory-item-card {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.inventory-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.inventory-item-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.inventory-item-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.inventory-item-info {
+  flex: 1;
+}
+
+.inventory-item-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.inventory-item-count {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.inventory-item-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.inventory-item-actions {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 200px;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.inventory-action-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.inventory-action-use {
+  background: #10b981;
+  color: white;
+}
+
+.inventory-action-use:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.inventory-action-gift {
+  background: #3b82f6;
+  color: white;
+}
+
+.inventory-action-gift:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.inventory-action-cancel {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.inventory-action-cancel:hover {
+  background: #e5e7eb;
+}
+
