@@ -309,6 +309,12 @@
   margin-bottom: 2rem;
 }
 
+@media (min-width: 768px) {
+  .profile-stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .profile-stat-card {
   text-align: center;
   padding: 1.5rem;

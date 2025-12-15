@@ -79,6 +79,32 @@ export default function Profile() {
   const [location, setLocation] = useState(() => localStorage.getItem('userLocation') || '北京')
   const [badges, setBadges] = useState(() => getAllBadges())
   
+  // 获取我的地块数量
+  const getMyPlotsCount = (): number => {
+    const savedPlots = localStorage.getItem('gardenPlots')
+    if (!savedPlots) return 0
+    try {
+      const plots = JSON.parse(savedPlots)
+      const currentUserId = 'currentUser'
+      return plots.filter((plot: any) => plot.assignedTo === currentUserId).length
+    } catch (e) {
+      return 0
+    }
+  }
+  
+  // 初始化信誉积分（如果不存在则设为100）
+  const initializeReputation = () => {
+    const savedReputation = localStorage.getItem('userReputation')
+    if (savedReputation === null) {
+      localStorage.setItem('userReputation', '100')
+      return 100
+    }
+    return parseInt(savedReputation, 10)
+  }
+  
+  const [myPlotsCount, setMyPlotsCount] = useState(() => getMyPlotsCount())
+  const [reputation, setReputation] = useState(() => initializeReputation())
+  
   // 背包物品数据
   const [inventory, setInventory] = useState(() => ({
     seed: parseInt(localStorage.getItem('shopItem_seed') || '0', 10),
@@ -215,6 +241,12 @@ export default function Profile() {
           proposalTimes: parseInt(e.newValue || '0', 10),
         }))
       }
+      if (e.key === 'gardenPlots') {
+        setMyPlotsCount(getMyPlotsCount())
+      }
+      if (e.key === 'userReputation' && e.newValue) {
+        setReputation(parseInt(e.newValue || '100', 10))
+      }
     }
     window.addEventListener('storage', handleStorageChange)
 
@@ -249,6 +281,12 @@ export default function Profile() {
       }))
     }
     window.addEventListener('nameCardsUpdated', handleNameCardsUpdateForInventory as EventListener)
+    
+    // 监听地块更新事件
+    const handlePlotUpdate = () => {
+      setMyPlotsCount(getMyPlotsCount())
+    }
+    window.addEventListener('plotUpdated', handlePlotUpdate as EventListener)
 
     return () => {
       window.removeEventListener('pointsUpdated', handlePointsUpdate as EventListener)
@@ -258,6 +296,7 @@ export default function Profile() {
       window.removeEventListener('nameCardsUpdated', handleNameCardsUpdate as EventListener)
       window.removeEventListener('inventoryUpdated', handleInventoryUpdate as EventListener)
       window.removeEventListener('nameCardsUpdated', handleNameCardsUpdateForInventory as EventListener)
+      window.removeEventListener('plotUpdated', handlePlotUpdate as EventListener)
       window.removeEventListener('storage', handleStorageChange)
     }
   }, [])
@@ -651,6 +690,16 @@ export default function Profile() {
           <Card className="profile-stat-card">
             <div className="profile-stat-number">{profileData.checkInDays}天</div>
             <div className="profile-stat-label">连续打卡</div>
+          </Card>
+
+          <Card className="profile-stat-card">
+            <div className="profile-stat-number">{myPlotsCount}</div>
+            <div className="profile-stat-label">我的地块</div>
+          </Card>
+
+          <Card className="profile-stat-card">
+            <div className="profile-stat-number">{reputation}</div>
+            <div className="profile-stat-label">信誉积分</div>
           </Card>
         </div>
       </section>

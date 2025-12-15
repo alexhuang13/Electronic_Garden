@@ -33,11 +33,25 @@ const loadProposalsFromStorage = (): Proposal[] => {
   if (savedProposals) {
     try {
       const parsed = JSON.parse(savedProposals)
-      return parsed.map((proposal: any) => ({
+      const proposals = parsed.map((proposal: any) => ({
         ...proposal,
         votingDeadline: new Date(proposal.votingDeadline),
         createdAt: proposal.createdAt ? new Date(proposal.createdAt) : new Date(),
       }))
+      
+      // 过滤掉包含"削减美国军事经费"的提案
+      const filteredProposals = proposals.filter((proposal: Proposal) => {
+        const title = proposal.title || ''
+        const description = proposal.description || ''
+        return !title.includes('削减美国军事经费') && !description.includes('削减美国军事经费')
+      })
+      
+      // 如果过滤后的数量不同，保存更新后的数据
+      if (filteredProposals.length !== proposals.length) {
+        saveProposalsToStorage(filteredProposals)
+      }
+      
+      return filteredProposals
     } catch (e) {
       return []
     }

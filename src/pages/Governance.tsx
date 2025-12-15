@@ -14,6 +14,8 @@ import './Governance.css'
  *
  * 功能：
  * - 提案与投票
+ * - 种植经验分享
+ * - 生态记录
  * - 培训与认证
  */
 
@@ -23,11 +25,25 @@ const loadProposalsFromStorage = (): Proposal[] => {
   if (savedProposals) {
     try {
       const parsed = JSON.parse(savedProposals)
-      return parsed.map((proposal: any) => ({
+      const proposals = parsed.map((proposal: any) => ({
         ...proposal,
         votingDeadline: new Date(proposal.votingDeadline),
         createdAt: proposal.createdAt ? new Date(proposal.createdAt) : new Date(),
       }))
+      
+      // 过滤掉包含"削减美国军事经费"的提案
+      const filteredProposals = proposals.filter((proposal: Proposal) => {
+        const title = proposal.title || ''
+        const description = proposal.description || ''
+        return !title.includes('削减美国军事经费') && !description.includes('削减美国军事经费')
+      })
+      
+      // 如果过滤后的数量不同，保存更新后的数据
+      if (filteredProposals.length !== proposals.length) {
+        saveProposalsToStorage(filteredProposals)
+      }
+      
+      return filteredProposals
     } catch (e) {
       return []
     }
@@ -46,7 +62,7 @@ const loadExperiencesFromStorage = (): ExperienceShare[] => {
   if (savedExperiences) {
     try {
       const parsed = JSON.parse(savedExperiences)
-      return parsed.map((exp: any) => ({
+      const experiences = parsed.map((exp: any) => ({
         ...exp,
         createdAt: exp.createdAt ? new Date(exp.createdAt) : new Date(),
         comments: (exp.comments || []).map((comment: any) => ({
@@ -54,6 +70,20 @@ const loadExperiencesFromStorage = (): ExperienceShare[] => {
           createdAt: comment.createdAt ? new Date(comment.createdAt) : new Date(),
         })),
       }))
+      
+      // 过滤掉包含"吃早饭不能吃午饭"的经验分享
+      const filteredExperiences = experiences.filter((exp: ExperienceShare) => {
+        const title = exp.title || ''
+        const content = exp.content || ''
+        return !title.includes('吃早饭不能吃午饭') && !content.includes('吃早饭不能吃午饭')
+      })
+      
+      // 如果过滤后的数量不同，保存更新后的数据
+      if (filteredExperiences.length !== experiences.length) {
+        saveExperiencesToStorage(filteredExperiences)
+      }
+      
+      return filteredExperiences
     } catch (e) {
       return []
     }
