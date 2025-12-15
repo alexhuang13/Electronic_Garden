@@ -1,6 +1,5 @@
 import Banner from '@sections/banner/Banner'
 import PlotCardList from '@sections/plotCardList/PlotCardList'
-import QuickActions from '@sections/quickActions/QuickActions'
 import '@styles/pages.css'
 
 /**
@@ -20,8 +19,6 @@ export default function Garden() {
         <h2 className="section-title">花园地图</h2>
         <PlotCardList />
       </section>
-
-      <QuickActions actions={['water', 'weed', 'harvest']} />
     </div>
   )
 }

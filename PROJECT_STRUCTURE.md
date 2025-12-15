@@ -54,9 +54,9 @@ Electronic_Garden/
 每个文件对应一个主要页面（Tab）。页面组件只负责组织 sections，不包含复杂逻辑。
 
 - **Garden.tsx**: 🌿 我的花园页面
-- **Tasks.tsx**: 📋 任务与协作页面
-- **Community.tsx**: 🏆 社区与激励页面
-- **Governance.tsx**: ⚖️ 治理与台账页面
+- **Tasks.tsx**: 📋 我的任务页面
+- **Community.tsx**: 🏆 社区页面
+- **Governance.tsx**: ⚖️ 花园治理页面
 
 #### 2.3 sections/ - 功能模块
 
@@ -74,16 +74,12 @@ sections/
 │   ├── PlotCardList.css
 │   ├── PlotCard.css
 │   └── usePlotCardList.ts
-├── todoList/            # 任务列表模块
-│   ├── TodoList.tsx
-│   ├── TodoItem.tsx
-│   ├── TodoList.css
-│   ├── TodoItem.css
-│   └── useTodoList.ts
-└── quickActions/        # 快捷操作模块
-    ├── QuickActions.tsx
-    ├── QuickActions.css
-    └── useQuickActions.ts
+└── todoList/            # 任务列表模块
+    ├── TodoList.tsx
+    ├── TodoItem.tsx
+    ├── TodoList.css
+    ├── TodoItem.css
+    └── useTodoList.ts
 ```
 
 **模块设计原则**:
@@ -198,7 +194,7 @@ npm run preview
 目前框架已经搭建完成，包括：
 
 ✅ 4 个主要页面的基础结构
-✅ 4 个示例功能模块（banner、plotCardList、todoList、quickActions）
+✅ 3 个示例功能模块（banner、plotCardList、todoList）
 ✅ 完整的类型定义系统
 ✅ 服务层架构
 ✅ 业务逻辑模块

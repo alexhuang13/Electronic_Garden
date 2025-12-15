@@ -3,15 +3,17 @@ import './Navigation.css'
 
 /**
  * 导航栏组件
- * 显示 4 个主要页面的导航标签
+ * 显示 6 个主要页面的导航标签
  */
 
 export default function Navigation() {
   const navItems = [
     { path: '/garden', icon: '🌿', label: '我的花园' },
-    { path: '/tasks', icon: '📋', label: '任务与协作' },
-    { path: '/community', icon: '🏆', label: '社区与激励' },
-    { path: '/governance', icon: '⚖️', label: '治理与台账' },
+    { path: '/tasks', icon: '📋', label: '我的任务' },
+    { path: '/community', icon: '🏆', label: '社区' },
+    { path: '/governance', icon: '⚖️', label: '花园治理' },
+    { path: '/recharge', icon: '💰', label: '充值中心' },
+    { path: '/profile', icon: '👤', label: '个人中心' },
   ]
 
   return (

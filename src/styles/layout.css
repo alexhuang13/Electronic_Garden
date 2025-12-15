@@ -17,7 +17,7 @@
 
 .app-title {
   margin: 0;
-  font-size: 1.75rem;
+  font-size: 1.96875rem;
   font-weight: 700;
   text-align: center;
 }
@@ -36,7 +36,7 @@
   padding: 1.5rem;
   text-align: center;
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.984375rem;
 }
 
 /* ========== 响应式布局 ========== */
@@ -46,7 +46,7 @@
   }
 
   .app-title {
-    font-size: 1.25rem;
+    font-size: 1.40625rem;
   }
 
   .app-main {

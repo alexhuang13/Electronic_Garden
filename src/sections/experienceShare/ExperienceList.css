@@ -1,0 +1,106 @@
+/**
+ * 经验分享列表样式
+ */
+
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.experience-list-empty {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  border: 2px dashed var(--border-color);
+}
+
+.experience-list-empty p {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.984375rem;
+}
+
+.experience-list-create-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.984375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.experience-list-create-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.experience-list-create-icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.experience-card {
+  transition: all 0.2s ease;
+}
+
+.experience-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.experience-card-header {
+  margin-bottom: 1rem;
+}
+
+.experience-card-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.40625rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.experience-card-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.experience-card-author {
+  font-size: 0.984375rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.experience-card-date {
+  font-size: 0.84375rem;
+  color: var(--text-secondary);
+}
+
+.experience-card-content {
+  color: var(--text-secondary);
+  font-size: 0.984375rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 1rem;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .experience-card-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
