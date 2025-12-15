@@ -1,0 +1,234 @@
+/**
+ * 发布提案表单样式
+ */
+
+.create-proposal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.create-proposal-form-card {
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.create-proposal-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.create-proposal-form-title {
+  margin: 0;
+  font-size: 1.6875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.create-proposal-form-close {
+  background: none;
+  border: none;
+  font-size: 2.25rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.create-proposal-form-close:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.create-proposal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.create-proposal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.create-proposal-form-label {
+  font-size: 0.984375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.required {
+  color: #ef4444;
+}
+
+.create-proposal-form-input,
+.create-proposal-form-textarea,
+.create-proposal-form-select {
+  padding: 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.984375rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.create-proposal-form-input:focus,
+.create-proposal-form-textarea:focus,
+.create-proposal-form-select:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.create-proposal-form-input.error,
+.create-proposal-form-textarea.error {
+  border-color: #ef4444;
+}
+
+.create-proposal-form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.create-proposal-form-select {
+  cursor: pointer;
+}
+
+.create-proposal-form-error {
+  font-size: 0.84375rem;
+  color: #ef4444;
+  margin-top: -0.25rem;
+}
+
+.create-proposal-form-reward {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+  border: 2px solid rgba(16, 185, 129, 0.2);
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.create-proposal-form-reward-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.create-proposal-form-reward-content {
+  flex: 1;
+}
+
+.create-proposal-form-reward-title {
+  font-size: 0.984375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.create-proposal-form-reward-desc {
+  font-size: 0.984375rem;
+  color: var(--text-secondary);
+}
+
+.create-proposal-form-reward-stars {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+.create-proposal-form-reward-exp {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.create-proposal-form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.create-proposal-form-cancel,
+.create-proposal-form-submit {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.984375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.create-proposal-form-cancel {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.create-proposal-form-cancel:hover {
+  background: var(--border-color);
+  color: var(--text-primary);
+}
+
+.create-proposal-form-submit {
+  background: #10b981;
+  color: white;
+}
+
+.create-proposal-form-submit:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .create-proposal-form-card {
+    width: 95%;
+    margin: 1rem;
+  }
+
+  .create-proposal-form-title {
+    font-size: 1.40625rem;
+  }
+
+  .create-proposal-form-actions {
+    flex-direction: column;
+  }
+}
+

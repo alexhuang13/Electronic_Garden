@@ -162,6 +162,25 @@ export interface Training extends BaseEntity {
 
 export type TrainingStatus = 'upcoming' | 'ongoing' | 'completed' | 'cancelled'
 
+// ========== 经验分享相关类型 ==========
+
+export interface ExperienceShare extends BaseEntity {
+  title: string
+  content: string
+  authorId: ID
+  authorName: string
+  comments: Comment[]
+  likes?: number
+}
+
+export interface Comment extends BaseEntity {
+  experienceId: ID
+  userId: ID
+  userName: string
+  content: string
+  replyTo?: ID // 回复的评论ID
+}
+
 // ========== 通知类型 ==========
 
 export interface Notification extends BaseEntity {

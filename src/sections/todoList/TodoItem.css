@@ -42,12 +42,12 @@
 }
 
 .todo-item-emoji {
-  font-size: 1.5rem;
+  font-size: 1.6875rem;
 }
 
 .todo-item-title {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: #1f2937;
   flex: 1;
@@ -56,7 +56,7 @@
 .todo-item-priority {
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.84375rem;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -84,13 +84,48 @@
 .todo-item-description {
   margin: 0 0 0.75rem 0;
   color: #6b7280;
-  font-size: 0.875rem;
+  font-size: 0.984375rem;
 }
 
 .todo-item-due-date {
   margin: 0 0 0.75rem 0;
   color: #9ca3af;
-  font-size: 0.75rem;
+  font-size: 0.84375rem;
+}
+
+.todo-item-reward {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-radius: 6px;
+  border-left: 3px solid #f59e0b;
+}
+
+.todo-item-reward-label {
+  font-size: 0.84375rem;
+  color: #92400e;
+  font-weight: 500;
+}
+
+.todo-item-reward-stars {
+  font-size: 0.984375rem;
+  font-weight: 700;
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.todo-item-reward-exp {
+  font-size: 0.984375rem;
+  font-weight: 700;
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .todo-item-complete-btn {
@@ -99,10 +134,12 @@
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 6px;
-  font-size: 0.875rem;
+  font-size: 0.984375rem;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s ease;
+  width: 100%;
+  margin-top: 0.5rem;
 }
 
 .todo-item-complete-btn:hover {

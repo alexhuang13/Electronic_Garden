@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { useTodoList } from './useTodoList'
 import TodoItem from './TodoItem'
+import CreateTaskForm from './CreateTaskForm'
 import './TodoList.css'
 
 /**
@@ -12,26 +14,54 @@ interface TodoListProps {
 }
 
 export default function TodoList({ filter }: TodoListProps) {
-  const { tasks, handleTaskClick, handleTaskComplete } = useTodoList(filter)
+  const { tasks, handleTaskClick, handleTaskComplete, handleCreateTask } = useTodoList(filter)
+  const [showCreateForm, setShowCreateForm] = useState(false)
 
-  if (tasks.length === 0) {
-    return (
-      <div className="todo-list-empty">
-        <p>暂无任务</p>
-      </div>
-    )
+  const handleFormSubmit = (taskData: {
+    title: string
+    description: string
+    dueDate: Date
+    reward: number
+  }) => {
+    if (handleCreateTask(taskData)) {
+      setShowCreateForm(false)
+    }
   }
 
   return (
-    <div className="todo-list">
-      {tasks.map((task) => (
-        <TodoItem
-          key={task.id}
-          task={task}
-          onClick={() => handleTaskClick(task.id)}
-          onComplete={() => handleTaskComplete(task.id)}
+    <>
+      {filter === 'needsHelp' && (
+        <div className="todo-list-header">
+          <button className="todo-list-create-btn" onClick={() => setShowCreateForm(true)}>
+            <span className="todo-list-create-icon">➕</span>
+            <span>发布任务</span>
+          </button>
+        </div>
+      )}
+
+      {showCreateForm && (
+        <CreateTaskForm
+          onClose={() => setShowCreateForm(false)}
+          onSubmit={handleFormSubmit}
         />
-      ))}
-    </div>
+      )}
+
+      {tasks.length === 0 ? (
+        <div className="todo-list-empty">
+          <p>暂无任务</p>
+        </div>
+      ) : (
+        <div className="todo-list">
+          {tasks.map((task) => (
+            <TodoItem
+              key={task.id}
+              task={task}
+              onClick={() => handleTaskClick(task.id)}
+              onComplete={() => handleTaskComplete(task.id)}
+            />
+          ))}
+        </div>
+      )}
+    </>
   )
 }

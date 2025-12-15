@@ -1,0 +1,62 @@
+/**
+ * 治理页面样式
+ */
+
+.governance-page {
+  /* 页面特定样式 */
+}
+
+.proposal-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.proposal-section-header .section-title {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.proposal-create-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.984375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.proposal-create-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.proposal-create-icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .proposal-section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .proposal-create-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

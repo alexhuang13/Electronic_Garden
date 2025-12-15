@@ -3,6 +3,8 @@ import Garden from '@pages/Garden'
 import Tasks from '@pages/Tasks'
 import Community from '@pages/Community'
 import Governance from '@pages/Governance'
+import Profile from '@pages/Profile'
+import Recharge from '@pages/Recharge'
 import Layout from '@core/Layout'
 
 /**
@@ -19,6 +21,8 @@ export default function Router() {
           <Route path="tasks" element={<Tasks />} />
           <Route path="community" element={<Community />} />
           <Route path="governance" element={<Governance />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="recharge" element={<Recharge />} />
           <Route path="*" element={<Navigate to="/garden" replace />} />
         </Route>
       </Routes>
