@@ -446,28 +446,12 @@
 }
 
 .profile-badges-list {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 1rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-}
-
-.profile-badges-list::-webkit-scrollbar {
-  height: 6px;
-}
-
-.profile-badges-list::-webkit-scrollbar-track {
-  background: var(--bg-tertiary);
-  border-radius: 3px;
-}
-
-.profile-badges-list::-webkit-scrollbar-thumb {
-  background: var(--color-gray-400);
-  border-radius: 3px;
 }
 
 .profile-badge-card {
-  min-width: 120px;
   text-align: center;
   padding: 1.25rem 1rem;
   cursor: default;
@@ -491,12 +475,64 @@
   font-size: 0.984375rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.profile-badge-description {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
 }
 
 .profile-badge-date {
   font-size: 0.84375rem;
   color: var(--text-secondary);
+}
+
+/* ========== 我的背包 ========== */
+.inventory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.inventory-shop-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.inventory-shop-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.inventory-shop-icon {
+  font-size: 1.25rem;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.inventory-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
 }
 
 /* ========== 响应式 ========== */
@@ -555,11 +591,11 @@
   }
 
   .profile-badges-list {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 0.75rem;
   }
 
   .profile-badge-card {
-    min-width: 100px;
     padding: 1rem 0.75rem;
   }
 

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Card from '@components/Card'
+import InventoryItem from '@sections/inventory/InventoryItem'
+import FriendSelectModal from '@sections/inventory/FriendSelectModal'
+import { getAllBadges, incrementGiftCount } from '@modules/badgeManager'
 import '@styles/pages.css'
 import './Profile.css'
 
@@ -42,11 +45,7 @@ export default function Profile() {
     experienceShareTimes: 0,
     proposalTimes: 0,
     checkInDays: 129,
-    badges: [
-      { name: '新芽园丁', icon: '🌱', date: '2024-01-05', earned: true },
-      { name: '浇水达人', icon: '💧', date: '2024-01-15', earned: true },
-      { name: '除草专家', icon: '🌿', date: '', earned: false },
-    ],
+    badges: getAllBadges(),
   }
 
   // 从localStorage加载数据，如果没有则使用初始数据
@@ -78,6 +77,22 @@ export default function Profile() {
   const [levelUpMessage, setLevelUpMessage] = useState('')
   const [nameCards, setNameCards] = useState(() => parseInt(localStorage.getItem('nameCards') || '0', 10))
   const [location, setLocation] = useState(() => localStorage.getItem('userLocation') || '北京')
+  const [badges, setBadges] = useState(() => getAllBadges())
+  
+  // 背包物品数据
+  const [inventory, setInventory] = useState(() => ({
+    seed: parseInt(localStorage.getItem('shopItem_seed') || '0', 10),
+    fertilizer: parseInt(localStorage.getItem('shopItem_fertilizer') || '0', 10),
+    coffee: parseInt(localStorage.getItem('shopItem_coffee') || '0', 10),
+    fountain: parseInt(localStorage.getItem('shopItem_fountain') || '0', 10),
+    bench: parseInt(localStorage.getItem('shopItem_bench') || '0', 10),
+    watering_upgrade: parseInt(localStorage.getItem('shopItem_watering_upgrade') || '0', 10),
+    nameCard: parseInt(localStorage.getItem('nameCards') || '0', 10),
+  }))
+  
+  // 好友选择弹窗状态
+  const [showFriendSelect, setShowFriendSelect] = useState(false)
+  const [giftingItem, setGiftingItem] = useState<{ id: string; name: string } | null>(null)
 
   // 监听积分和经验值更新事件（充值后或完成任务后）
   useEffect(() => {
@@ -155,6 +170,12 @@ export default function Profile() {
       }
     }
     window.addEventListener('proposalTimesUpdated', handleProposalTimesUpdate as EventListener)
+
+    // 监听徽章更新事件
+    const handleBadgeUpdate = () => {
+      setBadges(getAllBadges())
+    }
+    window.addEventListener('badgeUpdated', handleBadgeUpdate as EventListener)
     
     // 监听storage事件（跨标签页）
     const handleStorageChange = (e: StorageEvent) => {
@@ -205,12 +226,38 @@ export default function Profile() {
       }
     }
     window.addEventListener('nameCardsUpdated', handleNameCardsUpdate as EventListener)
+    
+    // 监听背包更新事件
+    const handleInventoryUpdate = () => {
+      setInventory({
+        seed: parseInt(localStorage.getItem('shopItem_seed') || '0', 10),
+        fertilizer: parseInt(localStorage.getItem('shopItem_fertilizer') || '0', 10),
+        coffee: parseInt(localStorage.getItem('shopItem_coffee') || '0', 10),
+        fountain: parseInt(localStorage.getItem('shopItem_fountain') || '0', 10),
+        bench: parseInt(localStorage.getItem('shopItem_bench') || '0', 10),
+        watering_upgrade: parseInt(localStorage.getItem('shopItem_watering_upgrade') || '0', 10),
+        nameCard: parseInt(localStorage.getItem('nameCards') || '0', 10),
+      })
+    }
+    window.addEventListener('inventoryUpdated', handleInventoryUpdate as EventListener)
+    
+    // 监听改名卡更新事件（更新背包中的改名卡数量）
+    const handleNameCardsUpdateForInventory = () => {
+      setInventory(prev => ({
+        ...prev,
+        nameCard: parseInt(localStorage.getItem('nameCards') || '0', 10),
+      }))
+    }
+    window.addEventListener('nameCardsUpdated', handleNameCardsUpdateForInventory as EventListener)
 
     return () => {
       window.removeEventListener('pointsUpdated', handlePointsUpdate as EventListener)
       window.removeEventListener('experienceShareTimesUpdated', handleExperienceShareTimesUpdate as EventListener)
       window.removeEventListener('proposalTimesUpdated', handleProposalTimesUpdate as EventListener)
+      window.removeEventListener('badgeUpdated', handleBadgeUpdate as EventListener)
       window.removeEventListener('nameCardsUpdated', handleNameCardsUpdate as EventListener)
+      window.removeEventListener('inventoryUpdated', handleInventoryUpdate as EventListener)
+      window.removeEventListener('nameCardsUpdated', handleNameCardsUpdateForInventory as EventListener)
       window.removeEventListener('storage', handleStorageChange)
     }
   }, [])
@@ -334,6 +381,166 @@ export default function Profile() {
     alert('地点已更新！天气信息将刷新')
   }
 
+  // 处理使用物品
+  const handleUseItem = (itemId: string, itemName: string) => {
+    // 改名卡使用特殊处理
+    if (itemId === 'nameCard') {
+      const currentCount = parseInt(localStorage.getItem('nameCards') || '0', 10)
+      if (currentCount <= 0) {
+        alert('改名卡数量不足！')
+        return
+      }
+      // 改名卡的使用逻辑已经在 handleChangeName 中处理
+      handleChangeName()
+      return
+    }
+
+    const currentCount = parseInt(localStorage.getItem(`shopItem_${itemId}`) || '0', 10)
+    if (currentCount <= 0) {
+      alert('物品数量不足！')
+      return
+    }
+
+    // 扣除物品
+    const newCount = currentCount - 1
+    localStorage.setItem(`shopItem_${itemId}`, newCount.toString())
+    
+    // 更新状态
+    setInventory(prev => ({
+      ...prev,
+      [itemId]: newCount,
+    }))
+
+    // 触发背包更新事件
+    window.dispatchEvent(new CustomEvent('inventoryUpdated'))
+
+    // 根据物品类型执行不同效果
+    if (itemId === 'seed') {
+      // 种子包：只显示文字提示
+      alert(`使用了${itemName}！获得随机种子奖励。`)
+      
+    } else if (itemId === 'fertilizer') {
+      // 肥料包：只显示文字提示
+      alert(`使用了${itemName}！所有地块的植物生长速度加快。`)
+      
+    } else if (itemId === 'coffee') {
+      // 咖啡兑换券：只显示文字提示
+      alert(`使用了${itemName}！精神焕发，干劲十足！`)
+      
+    } else if (itemId === 'fountain') {
+      // 小喷泉：只显示文字提示
+      alert(`使用了${itemName}！花园变得更加美丽，所有地块的水分增加了！`)
+      
+    } else if (itemId === 'bench') {
+      // 长椅：只显示文字提示
+      alert(`使用了${itemName}！在长椅上休息，心情愉悦！`)
+      
+    } else if (itemId === 'watering_upgrade') {
+      // 浇水工具升级：永久提升浇水效果（标记已升级）
+      const hasUpgrade = localStorage.getItem('wateringToolUpgraded')
+      if (hasUpgrade === 'true') {
+        alert(`您已经升级过浇水工具了！`)
+        // 退回道具
+        const currentCount = parseInt(localStorage.getItem(`shopItem_${itemId}`) || '0', 10) + 1
+        localStorage.setItem(`shopItem_${itemId}`, currentCount.toString())
+        setInventory(prev => ({
+          ...prev,
+          [itemId]: currentCount,
+        }))
+        return
+      }
+      
+      localStorage.setItem('wateringToolUpgraded', 'true')
+      alert(`使用了${itemName}！浇水工具已升级，以后完成浇水任务将获得双倍奖励！`)
+    }
+  }
+
+  // 处理赠送物品（打开好友选择弹窗）
+  const handleGiftItem = (itemId: string, itemName: string) => {
+    // 改名卡赠送特殊处理
+    let currentCount: number
+    if (itemId === 'nameCard') {
+      currentCount = parseInt(localStorage.getItem('nameCards') || '0', 10)
+    } else {
+      currentCount = parseInt(localStorage.getItem(`shopItem_${itemId}`) || '0', 10)
+    }
+    
+    if (currentCount <= 0) {
+      alert('物品数量不足！')
+      return
+    }
+
+    // 检查是否有好友
+    const savedFriends = localStorage.getItem('friends')
+    if (!savedFriends) {
+      alert('您还没有好友，先去添加好友吧！')
+      return
+    }
+
+    try {
+      const friends = JSON.parse(savedFriends)
+      if (friends.length === 0) {
+        alert('您还没有好友，先去添加好友吧！')
+        return
+      }
+    } catch (e) {
+      alert('您还没有好友，先去添加好友吧！')
+      return
+    }
+
+    // 打开好友选择弹窗
+    setGiftingItem({ id: itemId, name: itemName })
+    setShowFriendSelect(true)
+  }
+
+  // 确认赠送给选中的好友
+  const handleConfirmGift = (friendName: string) => {
+    if (!giftingItem) return
+
+    const { id: itemId, name: itemName } = giftingItem
+    
+    // 改名卡赠送特殊处理
+    let currentCount: number
+    if (itemId === 'nameCard') {
+      currentCount = parseInt(localStorage.getItem('nameCards') || '0', 10)
+    } else {
+      currentCount = parseInt(localStorage.getItem(`shopItem_${itemId}`) || '0', 10)
+    }
+    
+    if (currentCount <= 0) {
+      alert('物品数量不足！')
+      return
+    }
+
+    // 扣除物品
+    const newCount = currentCount - 1
+    if (itemId === 'nameCard') {
+      localStorage.setItem('nameCards', newCount.toString())
+    } else {
+      localStorage.setItem(`shopItem_${itemId}`, newCount.toString())
+    }
+    
+    // 更新状态
+    setInventory(prev => ({
+      ...prev,
+      [itemId]: newCount,
+    }))
+
+    // 触发背包更新事件
+    window.dispatchEvent(new CustomEvent('inventoryUpdated'))
+
+    // 检查赠人玫瑰徽章
+    const newBadge = incrementGiftCount()
+    if (newBadge) {
+      alert(`已将${itemName}赠送给 ${friendName}！\n\n🎉 获得新徽章：${newBadge.name} ${newBadge.icon}\n✨ 徽章奖励：500⭐ + 50EXP`)
+    } else {
+      alert(`已将${itemName}赠送给 ${friendName}！`)
+    }
+    
+    setGiftingItem(null)
+    setShowFriendSelect(false)
+  }
+
   const expPercentage = (profileData.currentExp / profileData.maxExp) * 100
 
   return (
@@ -448,38 +655,81 @@ export default function Profile() {
         </div>
       </section>
 
-      {/* 改名卡 */}
+      {/* 我的背包 */}
       <section className="page-section">
-        <Card className="profile-namecard-section">
-          <div className="profile-namecard-header">
-            <div className="profile-namecard-info">
-              <div className="profile-namecard-icon">✏️</div>
-              <div>
-                <div className="profile-namecard-title">改名卡</div>
-                <div className="profile-namecard-count">剩余：{nameCards}张</div>
-              </div>
-            </div>
-            {nameCards > 0 ? (
-              <button 
-                className="profile-namecard-btn"
-                onClick={handleChangeName}
-              >
-                修改名字
-              </button>
-            ) : (
-              <button 
-                className="profile-namecard-btn profile-namecard-btn-disabled"
-                onClick={() => navigate('/recharge')}
-              >
-                前往商城购买
-              </button>
-            )}
+        <div className="inventory-header">
+          <h2 className="section-title">我的背包</h2>
+          <button 
+            className="inventory-shop-btn"
+            onClick={() => navigate('/recharge')}
+          >
+            <span className="inventory-shop-icon">🛒</span>
+            <span>前往商城购买</span>
+          </button>
+        </div>
+        <div className="inventory-grid">
+          <InventoryItem
+            id="seed"
+            name="种子包"
+            icon="🌱"
+            count={inventory.seed}
+            onUse={() => handleUseItem('seed', '种子包')}
+            onGift={() => handleGiftItem('seed', '种子包')}
+          />
+          <InventoryItem
+            id="fertilizer"
+            name="肥料包"
+            icon="🌿"
+            count={inventory.fertilizer}
+            onUse={() => handleUseItem('fertilizer', '肥料包')}
+            onGift={() => handleGiftItem('fertilizer', '肥料包')}
+          />
+          <InventoryItem
+            id="coffee"
+            name="咖啡兑换券"
+            icon="☕"
+            count={inventory.coffee}
+            onUse={() => handleUseItem('coffee', '咖啡兑换券')}
+            onGift={() => handleGiftItem('coffee', '咖啡兑换券')}
+          />
+          <InventoryItem
+            id="fountain"
+            name="花园装饰-小喷泉"
+            icon="⛲"
+            count={inventory.fountain}
+            onUse={() => handleUseItem('fountain', '花园装饰-小喷泉')}
+            onGift={() => handleGiftItem('fountain', '花园装饰-小喷泉')}
+          />
+          <InventoryItem
+            id="bench"
+            name="花园装饰-长椅"
+            icon="🪑"
+            count={inventory.bench}
+            onUse={() => handleUseItem('bench', '花园装饰-长椅')}
+            onGift={() => handleGiftItem('bench', '花园装饰-长椅')}
+          />
+          <InventoryItem
+            id="watering_upgrade"
+            name="浇水工具升级"
+            icon="🔧"
+            count={inventory.watering_upgrade}
+            onUse={() => handleUseItem('watering_upgrade', '浇水工具升级')}
+            onGift={() => handleGiftItem('watering_upgrade', '浇水工具升级')}
+          />
+          <InventoryItem
+            id="nameCard"
+            name="改名卡"
+            icon="✏️"
+            count={inventory.nameCard}
+            onUse={() => handleUseItem('nameCard', '改名卡')}
+            onGift={() => handleGiftItem('nameCard', '改名卡')}
+          />
+        </div>
+        {Object.values(inventory).every(count => count === 0) && (
+          <div className="inventory-empty">
+            <p>背包为空，前往商城购买商品吧！</p>
           </div>
-          <div className="profile-namecard-current">
-            <span className="profile-namecard-label">当前名字：</span>
-            <span className="profile-namecard-name">{profileData.name}</span>
-          </div>
-        </Card>
+        )}
       </section>
 
       {/* 我的徽章 */}
@@ -490,20 +740,33 @@ export default function Profile() {
         </div>
         
         <div className="profile-badges-list">
-          {profileData.badges.map((badge, index) => (
+          {badges.map((badge) => (
             <Card 
-              key={index} 
+              key={badge.id} 
               className={`profile-badge-card ${!badge.earned ? 'profile-badge-unearned' : ''}`}
             >
               <div className="profile-badge-icon">{badge.icon}</div>
               <div className="profile-badge-name">{badge.name}</div>
+              <div className="profile-badge-description">{badge.description}</div>
               <div className="profile-badge-date">
-                {badge.earned ? badge.date : '未获得'}
+                {badge.earned ? (badge.earnedDate || '已获得') : '未获得'}
               </div>
             </Card>
           ))}
         </div>
       </section>
+
+      {/* 好友选择弹窗 */}
+      {showFriendSelect && giftingItem && (
+        <FriendSelectModal
+          itemName={giftingItem.name}
+          onSelect={handleConfirmGift}
+          onClose={() => {
+            setShowFriendSelect(false)
+            setGiftingItem(null)
+          }}
+        />
+      )}
     </div>
   )
 }

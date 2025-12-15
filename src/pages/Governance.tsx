@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { checkHelpful } from '@modules/badgeManager'
 import { Proposal, ProposalCategory, ExperienceShare } from '@core/types'
 import ProposalList from '@sections/proposals/ProposalList'
 import CreateProposalForm from '@sections/proposals/CreateProposalForm'
 import ExperienceList from '@sections/experienceShare/ExperienceList'
 import CreateExperienceForm from '@sections/experienceShare/CreateExperienceForm'
+import SpeciesHandbook from '@sections/ecology/SpeciesHandbook'
 import '@styles/pages.css'
 import './Governance.css'
 
@@ -211,12 +213,19 @@ export default function Governance() {
       detail: { newExperienceShareTimes } 
     }))
 
+    // 检查乐于助人徽章
+    const badge = checkHelpful()
+
     setShowCreateExperienceForm(false)
 
     // 显示奖励提示
-    const rewardMessage = levelUp 
+    let rewardMessage = levelUp 
       ? `经验分享发布成功！\n获得 ${rewardStars}⭐ 和 ${rewardExp}EXP\n恭喜升级！Lv.${newLevel}` 
       : `经验分享发布成功！\n获得 ${rewardStars}⭐ 和 ${rewardExp}EXP`
+    
+    if (badge) {
+      rewardMessage += `\n\n🎉 获得新徽章：${badge.name} ${badge.icon}\n✨ 徽章奖励：500⭐ + 50EXP`
+    }
     
     alert(rewardMessage)
   }
@@ -259,6 +268,11 @@ export default function Governance() {
         )}
 
         <ExperienceList onCreateExperience={() => setShowCreateExperienceForm(true)} />
+      </section>
+
+      <section className="page-section">
+        <h2 className="section-title">生态记录</h2>
+        <SpeciesHandbook />
       </section>
 
       <section className="page-section">

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Plot, ID } from '@core/types'
+import { incrementAdoptedPlotsCount } from '@modules/badgeManager'
 
 /**
  * PlotCardList 业务逻辑 Hook
@@ -236,8 +237,15 @@ export function usePlotCardList(filter: 'all' | 'myPlots' = 'all'): UsePlotCardL
       detail: { newPoints } 
     }))
     
+    // 检查并授予相关徽章
+    const badge = incrementAdoptedPlotsCount()
+    
     const plotName = updatedPlots.find(p => p.id === plotId)?.name || '地块'
-    alert(`您已成为 ${plotName} 的负责人！\n已扣除 ${responsibilityCost}⭐`)
+    let message = `您已成为 ${plotName} 的负责人！\n已扣除 ${responsibilityCost}⭐`
+    if (badge) {
+      message += `\n\n🎉 获得新徽章：${badge.name} ${badge.icon}\n✨ 徽章奖励：500⭐ + 50EXP`
+    }
+    alert(message)
   }
 
   const handleEditPlot = (plotId: ID, data: { cropName: string; status: Plot['status'] }) => {

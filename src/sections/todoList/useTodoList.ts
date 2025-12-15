@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Task, ID, Plot } from '@core/types'
+import { incrementWateringCount, incrementFertilizingCount, incrementWeedingCount } from '@modules/badgeManager'
 
 /**
  * TodoList 业务逻辑 Hook
@@ -334,8 +335,14 @@ export function useTodoList(filter: 'myTasks' | 'needsHelp' | 'overdue' | 'all')
     }
 
     // 获取任务奖励（如果是用户发布的任务，使用任务的reward，否则默认50）
-    const rewardStars = (task as any)?.reward || 50
-    const rewardExp = 10
+    let rewardStars = (task as any)?.reward || 50
+    let rewardExp = 10
+    
+    // 检查是否升级了浇水工具，如果是浇水任务则双倍奖励
+    if (task.type === 'watering' && localStorage.getItem('wateringToolUpgraded') === 'true') {
+      rewardStars *= 2
+      rewardExp *= 2
+    }
 
     // 获取当前数据
     const currentPoints = parseInt(localStorage.getItem('profilePoints') || '2420', 10)
@@ -371,13 +378,37 @@ export function useTodoList(filter: 'myTasks' | 'needsHelp' | 'overdue' | 'all')
       detail: { newPoints, newLevel, newCurrentExp, levelUp } 
     }))
 
+    // 检查并授予相关徽章
+    let badgeMessage = ''
+    if (task.type === 'watering') {
+      const badge = incrementWateringCount()
+      if (badge) {
+        badgeMessage = `\n\n🎉 获得新徽章：${badge.name} ${badge.icon}\n✨ 徽章奖励：500⭐ + 50EXP`
+      }
+    } else if (task.type === 'fertilizing') {
+      const badge = incrementFertilizingCount()
+      if (badge) {
+        badgeMessage = `\n\n🎉 获得新徽章：${badge.name} ${badge.icon}\n✨ 徽章奖励：500⭐ + 50EXP`
+      }
+    } else if (task.type === 'weeding') {
+      const badge = incrementWeedingCount()
+      if (badge) {
+        badgeMessage = `\n\n🎉 获得新徽章：${badge.name} ${badge.icon}\n✨ 徽章奖励：500⭐ + 50EXP`
+      }
+    }
+
     // 重新加载任务列表（任务会被移除，因为地块状态变化或任务被删除）
     reloadTasks(filter)
 
     // 显示奖励提示
+    let upgradeMessage = ''
+    if (task.type === 'watering' && localStorage.getItem('wateringToolUpgraded') === 'true') {
+      upgradeMessage = '\n🔧 浇水工具升级效果：双倍奖励！'
+    }
+    
     const rewardMessage = levelUp 
-      ? `任务完成！获得 ${rewardStars}⭐ 和 ${rewardExp}EXP\n恭喜升级！Lv.${newLevel}` 
-      : `任务完成！获得 ${rewardStars}⭐ 和 ${rewardExp}EXP`
+      ? `任务完成！获得 ${rewardStars}⭐ 和 ${rewardExp}EXP${upgradeMessage}\n恭喜升级！Lv.${newLevel}${badgeMessage}` 
+      : `任务完成！获得 ${rewardStars}⭐ 和 ${rewardExp}EXP${upgradeMessage}${badgeMessage}`
     
     alert(rewardMessage)
   }
