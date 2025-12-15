@@ -1,0 +1,186 @@
+/**
+ * 核心类型定义
+ * 这里定义项目中使用的通用类型和接口
+ */
+
+// ========== 通用类型 ==========
+
+export type ID = string | number
+
+export interface BaseEntity {
+  id: ID
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+// ========== 花园相关类型 ==========
+
+export interface Plot extends BaseEntity {
+  name: string
+  position: { x: number; y: number }
+  size: { width: number; height: number }
+  crops: Crop[]
+  status: PlotStatus
+  assignedTo?: ID // 负责人 ID
+}
+
+export type PlotStatus = 'empty' | 'planted' | 'growing' | 'ready' | 'needsWater' | 'needsCare'
+
+export interface Crop extends BaseEntity {
+  name: string
+  plantedDate: Date
+  expectedHarvestDate: Date
+  growthProgress: number // 0-100
+  waterLevel: number // 0-100
+  healthStatus: CropHealthStatus
+}
+
+export type CropHealthStatus = 'healthy' | 'needsWater' | 'needsFertilizer' | 'pest' | 'disease'
+
+// ========== 任务相关类型 ==========
+
+export interface Task extends BaseEntity {
+  title: string
+  description: string
+  type: TaskType
+  priority: TaskPriority
+  status: TaskStatus
+  assignedTo?: ID
+  dueDate?: Date
+  relatedPlotId?: ID
+  completedAt?: Date
+}
+
+export type TaskType = 'watering' | 'weeding' | 'fertilizing' | 'harvesting' | 'maintenance' | 'other'
+
+export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent'
+
+export type TaskStatus = 'pending' | 'inProgress' | 'completed' | 'overdue' | 'needsHelp'
+
+export interface Shift extends BaseEntity {
+  date: Date
+  timeSlot: string
+  assignedTo: ID
+  tasks: ID[] // Task IDs
+  status: ShiftStatus
+}
+
+export type ShiftStatus = 'upcoming' | 'current' | 'completed' | 'missed'
+
+// ========== 用户相关类型 ==========
+
+export interface User extends BaseEntity {
+  name: string
+  avatar?: string
+  email: string
+  role: UserRole
+  points: number
+  level: number
+  joinDate: Date
+  badges: Badge[]
+}
+
+export type UserRole = 'admin' | 'member' | 'volunteer' | 'guest'
+
+export interface Badge extends BaseEntity {
+  name: string
+  icon: string
+  description: string
+  earnedDate: Date
+}
+
+// ========== 社区相关类型 ==========
+
+export interface Leaderboard {
+  period: 'week' | 'month' | 'allTime'
+  entries: LeaderboardEntry[]
+}
+
+export interface LeaderboardEntry {
+  rank: number
+  userId: ID
+  userName: string
+  avatar?: string
+  points: number
+  level: number
+}
+
+export interface Reward extends BaseEntity {
+  name: string
+  description: string
+  icon: string
+  cost: number // 积分成本
+  category: RewardCategory
+  available: boolean
+}
+
+export type RewardCategory = 'tool' | 'seed' | 'decoration' | 'privilege' | 'gift'
+
+// ========== 治理相关类型 ==========
+
+export interface Proposal extends BaseEntity {
+  title: string
+  description: string
+  proposedBy: ID
+  category: ProposalCategory
+  status: ProposalStatus
+  votingDeadline: Date
+  votes: Vote[]
+  requiredVotes: number
+}
+
+export type ProposalCategory = 'rule' | 'budget' | 'event' | 'improvement' | 'other'
+
+export type ProposalStatus = 'draft' | 'voting' | 'approved' | 'rejected' | 'implemented'
+
+export interface Vote {
+  userId: ID
+  choice: 'approve' | 'reject' | 'abstain'
+  votedAt: Date
+  comment?: string
+}
+
+export interface FinancialRecord extends BaseEntity {
+  date: Date
+  type: 'income' | 'expense'
+  category: string
+  amount: number
+  description: string
+  approvedBy?: ID
+}
+
+export interface Training extends BaseEntity {
+  title: string
+  description: string
+  instructor: ID
+  date: Date
+  capacity: number
+  enrolled: ID[]
+  status: TrainingStatus
+  certification?: string
+}
+
+export type TrainingStatus = 'upcoming' | 'ongoing' | 'completed' | 'cancelled'
+
+// ========== 通知类型 ==========
+
+export interface Notification extends BaseEntity {
+  userId: ID
+  type: NotificationType
+  title: string
+  message: string
+  read: boolean
+  link?: string
+}
+
+export type NotificationType = 'task' | 'announcement' | 'achievement' | 'reminder' | 'system'
+
+// ========== 天气和建议 ==========
+
+export interface WeatherInfo {
+  date: Date
+  temperature: { min: number; max: number }
+  condition: 'sunny' | 'cloudy' | 'rainy' | 'stormy' | 'snowy'
+  humidity: number
+  gardeningAdvice: string
+}
