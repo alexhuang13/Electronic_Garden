@@ -22,9 +22,10 @@ export interface Plot extends BaseEntity {
   crops: Crop[]
   status: PlotStatus
   assignedTo?: ID // 负责人 ID
+  assignedToName?: string // 负责人名称
 }
 
-export type PlotStatus = 'empty' | 'planted' | 'growing' | 'ready' | 'needsWater' | 'needsCare'
+export type PlotStatus = 'empty' | 'planted' | 'growing' | 'ready' | 'needsWater' | 'needsFertilizer' | 'needsWeeding' | 'needsCare'
 
 export interface Crop extends BaseEntity {
   name: string
@@ -198,7 +199,7 @@ export type NotificationType = 'task' | 'announcement' | 'achievement' | 'remind
 
 export interface WeatherInfo {
   date: Date
-  temperature: { min: number; max: number }
+  temperature: { min: number; max: number; current?: number }
   condition: 'sunny' | 'cloudy' | 'rainy' | 'stormy' | 'snowy'
   humidity: number
   gardeningAdvice: string

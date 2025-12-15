@@ -1,27 +1,27 @@
 import { Plot, PlotStatus } from '@core/types'
 
 /**
- * 花园床位管理模块
- * 包含床位相关的业务逻辑
+ * 花园地块管理模块
+ * 包含地块相关的业务逻辑
  */
 
 export const plotManager = {
   /**
-   * 判断床位是否需要紧急照料
+   * 判断地块是否需要紧急照料
    */
   needsUrgentCare(plot: Plot): boolean {
     return plot.status === 'needsWater' || plot.status === 'needsCare'
   },
 
   /**
-   * 判断床位是否可以收获
+   * 判断地块是否可以收获
    */
   isReadyForHarvest(plot: Plot): boolean {
     return plot.status === 'ready'
   },
 
   /**
-   * 计算床位的健康度（0-100）
+   * 计算地块的健康度（0-100）
    */
   calculateHealth(plot: Plot): number {
     if (plot.crops.length === 0) return 100
@@ -39,7 +39,7 @@ export const plotManager = {
   },
 
   /**
-   * 获取床位状态的优先级（数字越大越紧急）
+   * 获取地块状态的优先级（数字越大越紧急）
    */
   getStatusPriority(status: PlotStatus): number {
     const priorityMap: Record<PlotStatus, number> = {
@@ -54,7 +54,7 @@ export const plotManager = {
   },
 
   /**
-   * 对床位列表按优先级排序
+   * 对地块列表按优先级排序
    */
   sortByPriority(plots: Plot[]): Plot[] {
     return [...plots].sort((a, b) => {

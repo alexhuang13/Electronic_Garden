@@ -8,11 +8,11 @@ import './Navigation.css'
 
 export default function Navigation() {
   const navItems = [
-    { path: '/garden', icon: '🌿', label: '我的花园' },
+    { path: '/garden', icon: '🌿', label: '花园' },
     { path: '/tasks', icon: '📋', label: '我的任务' },
     { path: '/community', icon: '🏆', label: '社区' },
     { path: '/governance', icon: '⚖️', label: '花园治理' },
-    { path: '/recharge', icon: '💰', label: '充值中心' },
+    { path: '/recharge', icon: '💰', label: '商城' },
     { path: '/profile', icon: '👤', label: '个人中心' },
   ]
 

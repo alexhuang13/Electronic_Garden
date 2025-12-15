@@ -1,8 +1,8 @@
 /**
- * 发布任务表单样式
+ * 编辑地块表单样式
  */
 
-.create-task-overlay {
+.edit-plot-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -16,12 +16,19 @@
   animation: fadeIn 0.2s ease-out;
 }
 
-.create-task-form-card {
+.edit-plot-form-card {
   width: 90%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-width: 500px;
   animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
@@ -35,7 +42,7 @@
   }
 }
 
-.create-task-form-header {
+.edit-plot-form-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -44,17 +51,17 @@
   border-bottom: 2px solid var(--border-color);
 }
 
-.create-task-form-title {
+.edit-plot-form-title {
   margin: 0;
-  font-size: 1.6875rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
 }
 
-.create-task-form-close {
+.edit-plot-form-close {
   background: none;
   border: none;
-  font-size: 2.25rem;
+  font-size: 2rem;
   color: var(--text-secondary);
   cursor: pointer;
   line-height: 1;
@@ -68,24 +75,24 @@
   transition: all 0.2s ease;
 }
 
-.create-task-form-close:hover {
+.edit-plot-form-close:hover {
   background: var(--bg-tertiary);
   color: var(--text-primary);
 }
 
-.create-task-form {
+.edit-plot-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.create-task-form-group {
+.edit-plot-form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.create-task-form-label {
+.edit-plot-form-label {
   font-size: 0.984375rem;
   font-weight: 600;
   color: var(--text-primary);
@@ -95,8 +102,8 @@
   color: #ef4444;
 }
 
-.create-task-form-input,
-.create-task-form-textarea {
+.edit-plot-form-input,
+.edit-plot-form-select {
   padding: 0.75rem;
   border: 2px solid var(--border-color);
   border-radius: 8px;
@@ -106,60 +113,32 @@
   background: white;
 }
 
-.create-task-form-input:focus,
-.create-task-form-textarea:focus {
+.edit-plot-form-input:focus,
+.edit-plot-form-select:focus {
   outline: none;
   border-color: #10b981;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
-.create-task-form-input.error,
-.create-task-form-textarea.error {
+.edit-plot-form-input.error {
   border-color: #ef4444;
 }
 
-.create-task-form-textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.create-task-form-reward-input {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.create-task-form-reward-input .create-task-form-input {
-  flex: 1;
-}
-
-.create-task-form-reward-unit {
-  font-size: 1.40625rem;
-  color: #f59e0b;
-  font-weight: 600;
-}
-
-.create-task-form-reward-hint {
-  font-size: 0.84375rem;
-  color: var(--text-secondary);
-  margin-top: 0.25rem;
-}
-
-.create-task-form-error {
-  font-size: 0.84375rem;
+.edit-plot-form-error {
+  font-size: 0.875rem;
   color: #ef4444;
   margin-top: -0.25rem;
 }
 
-.create-task-form-actions {
+.edit-plot-form-actions {
   display: flex;
   gap: 1rem;
-  margin-top: 1rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
 }
 
-.create-task-form-cancel,
-.create-task-form-submit {
-  flex: 1;
+.edit-plot-form-cancel,
+.edit-plot-form-submit {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
@@ -169,42 +148,23 @@
   transition: all 0.2s ease;
 }
 
-.create-task-form-cancel {
+.edit-plot-form-cancel {
   background: var(--bg-tertiary);
-  color: var(--text-secondary);
-}
-
-.create-task-form-cancel:hover {
-  background: var(--border-color);
   color: var(--text-primary);
 }
 
-.create-task-form-submit {
+.edit-plot-form-cancel:hover {
+  background: #e5e7eb;
+}
+
+.edit-plot-form-submit {
   background: #10b981;
   color: white;
 }
 
-.create-task-form-submit:hover {
+.edit-plot-form-submit:hover {
   background: #059669;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
-
-/* ========== 响应式 ========== */
-@media (max-width: 768px) {
-  .create-task-form-card {
-    width: 95%;
-    margin: 1rem;
-  }
-
-  .create-task-form-title {
-    font-size: 1.40625rem;
-  }
-
-  .create-task-form-actions {
-    flex-direction: column;
-  }
-}
-
-
 

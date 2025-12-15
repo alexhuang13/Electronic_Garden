@@ -1,0 +1,110 @@
+/**
+ * 天气预报样式
+ */
+
+.weather-forecast-card {
+  margin-bottom: 1.5rem;
+}
+
+.weather-forecast-loading {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.weather-forecast-header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.weather-forecast-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.weather-forecast-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.weather-forecast-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+}
+
+.forecast-date {
+  font-size: 0.984375rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  min-width: 3rem;
+}
+
+.forecast-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.forecast-temp-low {
+  font-size: 0.984375rem;
+  color: var(--text-secondary);
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+.forecast-temp-bar-container {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.forecast-temp-bar {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 4px;
+  min-width: 4px;
+}
+
+.forecast-temp-high {
+  font-size: 0.984375rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  min-width: 2.5rem;
+  text-align: left;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .weather-forecast-item {
+    gap: 0.5rem;
+  }
+
+  .forecast-date {
+    min-width: 2.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .forecast-icon {
+    font-size: 1.25rem;
+    min-width: 1.5rem;
+  }
+
+  .forecast-temp-low,
+  .forecast-temp-high {
+    font-size: 0.9375rem;
+    min-width: 2rem;
+  }
+}
+

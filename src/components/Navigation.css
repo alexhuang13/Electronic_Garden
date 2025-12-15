@@ -37,11 +37,11 @@
 }
 
 .nav-icon {
-  font-size: 1.40625rem;
+  font-size: 1.6875rem;
 }
 
 .nav-label {
-  font-size: 0.984375rem;
+  font-size: 1.125rem;
 }
 
 @media (max-width: 768px) {
@@ -58,6 +58,10 @@
   }
 
   .nav-label {
-    font-size: 0.84375rem;
+    font-size: 0.984375rem;
+  }
+
+  .nav-icon {
+    font-size: 1.40625rem;
   }
 }
