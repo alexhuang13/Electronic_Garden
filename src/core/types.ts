@@ -23,6 +23,19 @@ export interface Plot extends BaseEntity {
   status: PlotStatus
   assignedTo?: ID // 负责人 ID
   assignedToName?: string // 负责人名称
+  // 土地情况
+  soilCondition?: {
+    fertility: number // 肥力 0-100
+    droughtLevel: number // 干旱程度 0-100 (0=湿润, 100=极度干旱)
+  }
+  // 负责人详细信息（用于显示）
+  responsiblePerson?: {
+    id: ID
+    name: string
+    level: number
+    badges: Badge[]
+    avatar?: string
+  }
 }
 
 export type PlotStatus = 'empty' | 'planted' | 'growing' | 'ready' | 'needsWater' | 'needsFertilizer' | 'needsWeeding' | 'needsCare'
@@ -119,6 +132,21 @@ export type RewardCategory = 'tool' | 'seed' | 'decoration' | 'privilege' | 'gif
 
 // ========== 治理相关类型 ==========
 
+// 公告栏条目类型
+export type BulletinItemType = 'announcement' | 'proposal'
+
+// 公告接口
+export interface Announcement extends BaseEntity {
+  title: string
+  content: string
+  publishedBy: ID
+  publishedByName?: string
+  type: 'announcement'
+  priority?: 'normal' | 'important' | 'urgent' // 优先级
+  isPinned?: boolean // 是否置顶
+}
+
+// 提案接口（保留原有功能）
 export interface Proposal extends BaseEntity {
   title: string
   description: string
@@ -128,6 +156,7 @@ export interface Proposal extends BaseEntity {
   votingDeadline: Date
   votes: Vote[]
   requiredVotes: number
+  type: 'proposal'
 }
 
 export type ProposalCategory = 'rule' | 'budget' | 'event' | 'improvement' | 'other'
@@ -140,6 +169,9 @@ export interface Vote {
   votedAt: Date
   comment?: string
 }
+
+// 公告栏条目联合类型
+export type BulletinItem = Announcement | Proposal
 
 export interface FinancialRecord extends BaseEntity {
   date: Date

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { checkHelpful } from '@modules/badgeManager'
-import { Proposal, ProposalCategory, ExperienceShare } from '@core/types'
-import ProposalList from '@sections/proposals/ProposalList'
-import CreateProposalForm from '@sections/proposals/CreateProposalForm'
+import { Proposal, ProposalCategory, Announcement, ExperienceShare } from '@core/types'
+import BulletinList from '@sections/bulletin/BulletinList'
+import CreateBulletinForm from '@sections/bulletin/CreateBulletinForm'
 import ExperienceList from '@sections/experienceShare/ExperienceList'
 import CreateExperienceForm from '@sections/experienceShare/CreateExperienceForm'
 import SpeciesHandbook from '@sections/ecology/SpeciesHandbook'
@@ -13,7 +13,7 @@ import './Governance.css'
  * ⚖️ 花园治理页面
  *
  * 功能：
- * - 提案与投票
+ * - 公告栏（公告和提案）
  * - 种植经验分享
  * - 生态记录
  * - 培训与认证
@@ -27,6 +27,7 @@ const loadProposalsFromStorage = (): Proposal[] => {
       const parsed = JSON.parse(savedProposals)
       const proposals = parsed.map((proposal: any) => ({
         ...proposal,
+        type: 'proposal' as const, // 确保有type字段
         votingDeadline: new Date(proposal.votingDeadline),
         createdAt: proposal.createdAt ? new Date(proposal.createdAt) : new Date(),
       }))
@@ -96,9 +97,106 @@ const saveExperiencesToStorage = (experiences: ExperienceShare[]) => {
   localStorage.setItem('experienceShares', JSON.stringify(experiences))
 }
 
+// 从localStorage加载公告
+const loadAnnouncementsFromStorage = (): Announcement[] => {
+  const saved = localStorage.getItem('userAnnouncements')
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved)
+      return parsed.map((announcement: any) => ({
+        ...announcement,
+        createdAt: announcement.createdAt ? new Date(announcement.createdAt) : new Date(),
+      }))
+    } catch (e) {
+      return []
+    }
+  }
+  return []
+}
+
+// 保存公告到localStorage
+const saveAnnouncementsToStorage = (announcements: Announcement[]) => {
+  localStorage.setItem('userAnnouncements', JSON.stringify(announcements))
+}
+
 export default function Governance() {
-  const [showCreateForm, setShowCreateForm] = useState(false)
+  const [showCreateBulletinForm, setShowCreateBulletinForm] = useState(false)
   const [showCreateExperienceForm, setShowCreateExperienceForm] = useState(false)
+
+  const handleCreateBulletin = (data: {
+    type: 'announcement' | 'proposal'
+    title: string
+    content: string
+    category?: ProposalCategory
+    votingDeadline?: Date
+    priority?: 'normal' | 'important' | 'urgent'
+  }) => {
+    if (data.type === 'announcement') {
+      // 创建公告
+      const announcements = loadAnnouncementsFromStorage()
+      const newAnnouncement: Announcement = {
+        id: Date.now(),
+        title: data.title,
+        content: data.content,
+        publishedBy: 'currentUser',
+        publishedByName: localStorage.getItem('profileName') || '花园守护者',
+        type: 'announcement',
+        priority: data.priority || 'normal',
+        isPinned: false,
+        createdAt: new Date(),
+      }
+
+      const updatedAnnouncements = [...announcements, newAnnouncement]
+      saveAnnouncementsToStorage(updatedAnnouncements)
+      window.dispatchEvent(new CustomEvent('announcementUpdated'))
+
+      // 发布公告奖励：50星星和5EXP
+      const rewardStars = 50
+      const rewardExp = 5
+
+      // 获取当前数据
+      const currentPoints = parseInt(localStorage.getItem('profilePoints') || '2420', 10)
+      const currentLevel = parseInt(localStorage.getItem('profileLevel') || '5', 10)
+      const currentExp = parseInt(localStorage.getItem('profileCurrentExp') || '320', 10)
+      const maxExp = 500
+
+      // 计算新的积分和经验值
+      const newPoints = currentPoints + rewardStars
+      let newCurrentExp = currentExp + rewardExp
+      let newLevel = currentLevel
+      let levelUp = false
+
+      if (newCurrentExp >= maxExp) {
+        newLevel += 1
+        newCurrentExp = newCurrentExp - maxExp
+        levelUp = true
+      }
+
+      localStorage.setItem('profilePoints', newPoints.toString())
+      localStorage.setItem('profileLevel', newLevel.toString())
+      localStorage.setItem('profileCurrentExp', newCurrentExp.toString())
+
+      window.dispatchEvent(new CustomEvent('pointsUpdated', { 
+        detail: { newPoints, newLevel, newCurrentExp, levelUp } 
+      }))
+
+      setShowCreateBulletinForm(false)
+
+      const rewardMessage = levelUp 
+        ? `公告发布成功！\n获得 ${rewardStars}⭐ 和 ${rewardExp}EXP\n恭喜升级！Lv.${newLevel}` 
+        : `公告发布成功！\n获得 ${rewardStars}⭐ 和 ${rewardExp}EXP`
+      
+      alert(rewardMessage)
+    } else {
+      // 创建提案（保留原有逻辑）
+      handleCreateProposal({
+        title: data.title,
+        description: data.content,
+        category: data.category!,
+        votingDeadline: data.votingDeadline!,
+      })
+    }
+  }
 
   const handleCreateProposal = (proposalData: {
     title: string
@@ -117,6 +215,7 @@ export default function Governance() {
       votingDeadline: proposalData.votingDeadline,
       votes: [],
       requiredVotes: 10, // 默认需要10票
+      type: 'proposal',
       createdAt: new Date(),
     }
 
@@ -169,7 +268,7 @@ export default function Governance() {
       detail: { newProposalTimes } 
     }))
 
-    setShowCreateForm(false)
+    setShowCreateBulletinForm(false)
 
     // 显示奖励提示
     const rewardMessage = levelUp 
@@ -264,21 +363,21 @@ export default function Governance() {
     <div className="page governance-page">
       <section className="page-section">
         <div className="proposal-section-header">
-          <h2 className="section-title">提案与投票</h2>
-          <button className="proposal-create-btn" onClick={() => setShowCreateForm(true)}>
+          <h2 className="section-title">公告栏</h2>
+          <button className="proposal-create-btn" onClick={() => setShowCreateBulletinForm(true)}>
             <span className="proposal-create-icon">➕</span>
-            <span>发布提案</span>
+            <span>发布内容</span>
           </button>
         </div>
 
-        {showCreateForm && (
-          <CreateProposalForm
-            onClose={() => setShowCreateForm(false)}
-            onSubmit={handleCreateProposal}
+        {showCreateBulletinForm && (
+          <CreateBulletinForm
+            onClose={() => setShowCreateBulletinForm(false)}
+            onSubmit={handleCreateBulletin}
           />
         )}
 
-        <ProposalList onCreateProposal={() => setShowCreateForm(true)} />
+        <BulletinList onCreateBulletin={() => setShowCreateBulletinForm(true)} />
       </section>
 
       <section className="page-section">

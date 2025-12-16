@@ -58,6 +58,22 @@ const getDefaultPlots = (): Plot[] => [
         healthStatus: 'healthy',
       },
     ],
+    soilCondition: {
+      fertility: 75,
+      droughtLevel: 25,
+    },
+    assignedTo: 'user1',
+    assignedToName: '张三',
+    responsiblePerson: {
+      id: 'user1',
+      name: '张三',
+      level: 12,
+      badges: [
+        { id: 'b1', name: '种植达人', icon: '🌱', description: '成功种植10种植物', earnedDate: new Date('2025-10-01') },
+        { id: 'b2', name: '浇水专家', icon: '💧', description: '累计浇水100次', earnedDate: new Date('2025-10-15') },
+        { id: 'b3', name: '收获大师', icon: '🌾', description: '收获50次作物', earnedDate: new Date('2025-11-01') },
+      ],
+    },
   },
   {
     id: 2,
@@ -76,6 +92,20 @@ const getDefaultPlots = (): Plot[] => [
         healthStatus: 'needsWater',
       },
     ],
+    soilCondition: {
+      fertility: 50,
+      droughtLevel: 70,
+    },
+    assignedTo: 'user2',
+    assignedToName: '李四',
+    responsiblePerson: {
+      id: 'user2',
+      name: '李四',
+      level: 8,
+      badges: [
+        { id: 'b4', name: '新手园丁', icon: '🌿', description: '完成首次种植', earnedDate: new Date('2025-11-01') },
+      ],
+    },
   },
   {
     id: 3,
@@ -94,6 +124,25 @@ const getDefaultPlots = (): Plot[] => [
         healthStatus: 'healthy',
       },
     ],
+    soilCondition: {
+      fertility: 85,
+      droughtLevel: 15,
+    },
+    assignedTo: 'user3',
+    assignedToName: '王五',
+    responsiblePerson: {
+      id: 'user3',
+      name: '王五',
+      level: 18,
+      badges: [
+        { id: 'b5', name: '种植达人', icon: '🌱', description: '成功种植10种植物', earnedDate: new Date('2025-09-01') },
+        { id: 'b6', name: '浇水专家', icon: '💧', description: '累计浇水100次', earnedDate: new Date('2025-09-15') },
+        { id: 'b7', name: '收获大师', icon: '🌾', description: '收获50次作物', earnedDate: new Date('2025-10-01') },
+        { id: 'b8', name: '社区贡献者', icon: '🏆', description: '参与10次社区活动', earnedDate: new Date('2025-10-20') },
+        { id: 'b9', name: '知识分享', icon: '📚', description: '分享5篇种植经验', earnedDate: new Date('2025-11-01') },
+        { id: 'b10', name: '环保先锋', icon: '🌍', description: '使用有机肥料50次', earnedDate: new Date('2025-11-15') },
+      ],
+    },
   },
   {
     id: 4,
@@ -102,6 +151,10 @@ const getDefaultPlots = (): Plot[] => [
     size: { width: 2, height: 3 },
     status: 'empty',
     crops: [],
+    soilCondition: {
+      fertility: 40,
+      droughtLevel: 60,
+    },
   },
 ]
 

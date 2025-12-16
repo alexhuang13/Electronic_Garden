@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Plot } from '@core/types'
 import EditPlotForm from './EditPlotForm'
+import PlotDetailModal from './PlotDetailModal'
 import './PlotCard.css'
 
 /**
@@ -17,6 +18,7 @@ interface PlotCardProps {
 
 export default function PlotCard({ plot, onClick, onApplyResponsibility, onEdit, showEditButton = false }: PlotCardProps) {
   const [showEditForm, setShowEditForm] = useState(false)
+  const [showDetailModal, setShowDetailModal] = useState(false)
   const currentUserId = 'currentUser'
   const currentUserName = localStorage.getItem('profileName') || '花园守护者'
   
@@ -68,11 +70,20 @@ export default function PlotCard({ plot, onClick, onApplyResponsibility, onEdit,
     setShowEditForm(false)
   }
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // 如果点击的是编辑按钮或申请负责按钮，不打开详情模态框
+    if ((e.target as HTMLElement).closest('.plot-edit-btn, .plot-apply-responsible-btn')) {
+      return
+    }
+    setShowDetailModal(true)
+    onClick()
+  }
+
   return (
     <>
       <div
         className={`plot-card plot-card-${plot.status}`}
-        onClick={onClick}
+        onClick={handleCardClick}
       >
         <div className="plot-card-header">
           <span className="plot-card-emoji">{getStatusEmoji(plot.status)}</span>
@@ -138,6 +149,14 @@ export default function PlotCard({ plot, onClick, onApplyResponsibility, onEdit,
           )}
         </div>
       </div>
+
+      {/* 地块详情模态框 */}
+      {showDetailModal && (
+        <PlotDetailModal
+          plot={plot}
+          onClose={() => setShowDetailModal(false)}
+        />
+      )}
 
       {showEditForm && (
         <EditPlotForm
