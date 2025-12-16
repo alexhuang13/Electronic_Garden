@@ -44,6 +44,8 @@ export const plotManager = {
   getStatusPriority(status: PlotStatus): number {
     const priorityMap: Record<PlotStatus, number> = {
       needsWater: 5,
+      needsFertilizer: 4,
+      needsWeeding: 4,
       needsCare: 4,
       ready: 3,
       growing: 2,

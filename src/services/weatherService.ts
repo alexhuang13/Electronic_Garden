@@ -249,7 +249,7 @@ async function getForecastFromOpenWeather(days: number, city: string): Promise<W
   })
 
   // 转换为每日预报
-  Object.keys(dailyData).slice(0, days).forEach((dateKey, index) => {
+  Object.keys(dailyData).slice(0, days).forEach((dateKey) => {
     const dayItems = dailyData[dateKey]
     const temps = dayItems.map((item: any) => item.main.temp)
     const humidities = dayItems.map((item: any) => item.main.humidity)

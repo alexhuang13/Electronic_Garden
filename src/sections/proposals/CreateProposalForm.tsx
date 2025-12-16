@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Card from '@components/Card'
 import { ProposalCategory } from '@core/types'
 import './CreateProposalForm.css'
@@ -70,7 +70,7 @@ export default function CreateProposalForm({ onClose, onSubmit }: CreateProposal
 
   return (
     <div className="create-proposal-overlay" onClick={onClose}>
-      <Card className="create-proposal-form-card" onClick={(e) => e.stopPropagation()}>
+      <Card className="create-proposal-form-card" onClick={(e?: React.MouseEvent<HTMLDivElement>) => e?.stopPropagation()}>
         <div className="create-proposal-form-header">
           <h3 className="create-proposal-form-title">发布提案</h3>
           <button className="create-proposal-form-close" onClick={onClose}>×</button>

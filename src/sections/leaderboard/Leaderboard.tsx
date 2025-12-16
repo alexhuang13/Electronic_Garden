@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { getLeaderboardByLevel } from '../../utils/leaderboard'
+import type { LeaderboardEntry } from '../../utils/leaderboard'
 import './Leaderboard.css'
 
 /**
@@ -6,55 +8,30 @@ import './Leaderboard.css'
  * 显示等级和星星数量的排名
  */
 
-interface LeaderboardEntry {
-  rank: number
-  name: string
-  level: number
-  points: number
-  isCurrentUser: boolean
-}
-
 export default function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [sortBy, setSortBy] = useState<'level' | 'points'>('level')
 
   useEffect(() => {
-    // 获取当前用户数据
-    const currentUserPoints = parseInt(localStorage.getItem('profilePoints') || '2420', 10)
-    const currentUserLevel = parseInt(localStorage.getItem('profileLevel') || '5', 10)
-
-    // 模拟其他用户数据
-    const mockUsers: LeaderboardEntry[] = [
-      { rank: 0, name: '花园守护者', level: currentUserLevel, points: currentUserPoints, isCurrentUser: true },
-      { rank: 0, name: '绿手指', level: 8, points: 3500, isCurrentUser: false },
-      { rank: 0, name: '植物专家', level: 7, points: 3200, isCurrentUser: false },
-      { rank: 0, name: '园艺大师', level: 6, points: 2800, isCurrentUser: false },
-      { rank: 0, name: '新手园丁', level: 4, points: 1800, isCurrentUser: false },
-      { rank: 0, name: '勤劳小蜜蜂', level: 5, points: 2200, isCurrentUser: false },
-      { rank: 0, name: '刘浩然', level: 9, points: 4200, isCurrentUser: false },
-      { rank: 0, name: '花园新手', level: 3, points: 1200, isCurrentUser: false },
-    ]
-
-    // 根据排序方式排序
-    const sorted = [...mockUsers].sort((a, b) => {
-      if (sortBy === 'level') {
-        if (b.level !== a.level) {
-          return b.level - a.level
-        }
-        return b.points - a.points // 等级相同时按星星排序
-      } else {
+    // 使用工具函数获取排行榜数据
+    let ranked: LeaderboardEntry[] = []
+    
+    if (sortBy === 'level') {
+      ranked = getLeaderboardByLevel()
+    } else {
+      // 按星星排序
+      const allUsers = getLeaderboardByLevel()
+      const sorted = [...allUsers].sort((a, b) => {
         if (b.points !== a.points) {
           return b.points - a.points
         }
-        return b.level - a.level // 星星相同时按等级排序
-      }
-    })
-
-    // 设置排名
-    const ranked = sorted.map((user, index) => ({
-      ...user,
-      rank: index + 1,
-    }))
+        return b.level - a.level
+      })
+      ranked = sorted.map((user, index) => ({
+        ...user,
+        rank: index + 1,
+      }))
+    }
 
     setLeaderboard(ranked)
   }, [sortBy])

@@ -246,6 +246,16 @@
   white-space: nowrap;
 }
 
+.friend-action-message {
+  background: linear-gradient(135deg, #8a2be2 0%, #ff1493 100%);
+  color: white;
+}
+
+.friend-action-message:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(138, 43, 226, 0.3);
+}
+
 .friend-action-gift {
   background: #3b82f6;
   color: white;

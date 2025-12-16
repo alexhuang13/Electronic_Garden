@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Card from '@components/Card'
 import './CreateTaskForm.css'
 
@@ -65,7 +65,7 @@ export default function CreateTaskForm({ onClose, onSubmit }: CreateTaskFormProp
 
   return (
     <div className="create-task-overlay" onClick={onClose}>
-      <Card className="create-task-form-card" onClick={(e) => e.stopPropagation()}>
+      <Card className="create-task-form-card" onClick={(e?: React.MouseEvent<HTMLDivElement>) => e?.stopPropagation()}>
         <div className="create-task-form-header">
           <h3 className="create-task-form-title">发布任务</h3>
           <button className="create-task-form-close" onClick={onClose}>×</button>

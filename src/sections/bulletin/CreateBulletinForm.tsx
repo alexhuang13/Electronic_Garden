@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Card from '@components/Card'
 import { ProposalCategory, BulletinItemType } from '@core/types'
 import './CreateBulletinForm.css'
@@ -85,7 +85,7 @@ export default function CreateBulletinForm({ onClose, onSubmit }: CreateBulletin
 
   return (
     <div className="create-bulletin-overlay" onClick={onClose}>
-      <Card className="create-bulletin-form-card" onClick={(e) => e.stopPropagation()}>
+      <Card className="create-bulletin-form-card" onClick={(e?: React.MouseEvent<HTMLDivElement>) => e?.stopPropagation()}>
         <div className="create-bulletin-form-header">
           <h3 className="create-bulletin-form-title">发布内容</h3>
           <button className="create-bulletin-form-close" onClick={onClose}>×</button>

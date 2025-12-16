@@ -28,7 +28,6 @@ function formatWeatherContent(weather: {
   condition: string
   gardeningAdvice: string
 }): string {
-  const icon = getWeatherIcon(weather.condition)
   return `${weather.gardeningAdvice}（温度：${weather.temperature.min}-${weather.temperature.max}°C）`
 }
 

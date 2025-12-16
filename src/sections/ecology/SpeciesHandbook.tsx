@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Card from '@components/Card'
 import { checkLittleDarwin } from '@modules/badgeManager'
 import './SpeciesHandbook.css'
@@ -281,7 +281,7 @@ export default function SpeciesHandbook() {
       {/* 照片上传弹窗 */}
       {showPhotoUpload && speciesToUpload && (
         <div className="species-detail-overlay" onClick={handleCancelUpload}>
-          <Card className="species-photo-upload-modal" onClick={(e) => e.stopPropagation()}>
+          <Card className="species-photo-upload-modal" onClick={(e?: React.MouseEvent<HTMLDivElement>) => e?.stopPropagation()}>
             <div className="species-photo-upload-header">
               <h3 className="species-photo-upload-title">上传照片记录</h3>
               <button 
@@ -356,7 +356,7 @@ export default function SpeciesHandbook() {
       {/* 生物详情弹窗 */}
       {selectedSpecies && !showPhotoUpload && (
         <div className="species-detail-overlay" onClick={() => setSelectedSpecies(null)}>
-          <Card className="species-detail-modal" onClick={(e) => e.stopPropagation()}>
+          <Card className="species-detail-modal" onClick={(e?: React.MouseEvent<HTMLDivElement>) => e?.stopPropagation()}>
             <div className="species-detail-header">
               <div className="species-detail-icon">{selectedSpecies.icon}</div>
               <div className="species-detail-info">

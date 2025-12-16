@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Plot, PlotStatus } from '@core/types'
 import Card from '@components/Card'
 import './EditPlotForm.css'
@@ -58,7 +58,7 @@ export default function EditPlotForm({ plot, onClose, onSubmit }: EditPlotFormPr
 
   return (
     <div className="edit-plot-overlay" onClick={onClose}>
-      <Card className="edit-plot-form-card" onClick={(e) => e.stopPropagation()}>
+      <Card className="edit-plot-form-card" onClick={(e?: React.MouseEvent<HTMLDivElement>) => e?.stopPropagation()}>
         <div className="edit-plot-form-header">
           <h3 className="edit-plot-form-title">编辑地块 - {plot.name}</h3>
           <button className="edit-plot-form-close" onClick={onClose}>×</button>

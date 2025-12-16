@@ -63,6 +63,7 @@ export interface Task extends BaseEntity {
   dueDate?: Date
   relatedPlotId?: ID
   completedAt?: Date
+  reward?: number // 任务奖励（星星）
 }
 
 export type TaskType = 'watering' | 'weeding' | 'fertilizing' | 'harvesting' | 'maintenance' | 'other'

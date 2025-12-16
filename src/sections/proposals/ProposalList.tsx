@@ -143,7 +143,6 @@ export default function ProposalList({ onCreateProposal }: ProposalListProps) {
     // 检查是否达到所需票数
     const approveCount = proposal.votes.filter(v => v.choice === 'approve').length
     const rejectCount = proposal.votes.filter(v => v.choice === 'reject').length
-    const totalVotes = proposal.votes.length
 
     // 如果赞成票达到所需票数，自动通过
     if (approveCount >= proposal.requiredVotes && proposal.status === 'voting') {

@@ -52,7 +52,6 @@ export default function TodoItem({ task, onClick, onComplete }: TodoItemProps) {
       {task.status !== 'completed' && (
         <>
           <div className="todo-item-reward">
-            <span className="todo-item-reward-label">完成任务奖励：</span>
             <span className="todo-item-reward-stars">
               ⭐ {(task as any)?.reward || 50}
             </span>

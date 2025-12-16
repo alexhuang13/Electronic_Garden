@@ -12,7 +12,7 @@ interface CommentSectionProps {
   onAddComment: (content: string) => void
 }
 
-export default function CommentSection({ experienceId, comments, onAddComment }: CommentSectionProps) {
+export default function CommentSection({ comments, onAddComment }: CommentSectionProps) {
   const [commentText, setCommentText] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 

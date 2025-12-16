@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { BulletinItem, Announcement, Proposal, ProposalCategory, ID } from '@core/types'
 import Card from '@components/Card'
+import { showWarning } from '../../utils/notification'
 import './BulletinList.css'
 
 /**
@@ -28,7 +29,7 @@ const statusLabels: Record<Proposal['status'], string> = {
   implemented: '已实施',
 }
 
-const priorityLabels: Record<Announcement['priority'] | 'normal', { label: string; icon: string; color: string }> = {
+const priorityLabels: Record<NonNullable<Announcement['priority']>, { label: string; icon: string; color: string }> = {
   normal: { label: '普通', icon: '📌', color: '#6b7280' },
   important: { label: '重要', icon: '⚠️', color: '#f59e0b' },
   urgent: { label: '紧急', icon: '🚨', color: '#ef4444' },
@@ -88,6 +89,27 @@ export default function BulletinList({ onCreateBulletin }: BulletinListProps) {
     const announcements = loadAnnouncementsFromStorage()
     const proposals = loadProposalsFromStorage()
     
+    // 添加默认公告（如果不存在）
+    const defaultAnnouncement: Announcement = {
+      id: 'default-community-meeting',
+      type: 'announcement',
+      title: '社区会议通知',
+      content: '本周社区会议将于周六下午2点举行，欢迎参加！',
+      publishedBy: 'system',
+      publishedByName: '系统管理员',
+      priority: 'important',
+      isPinned: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+    
+    // 检查是否已存在默认公告
+    const hasDefaultAnnouncement = announcements.some(a => a.id === defaultAnnouncement.id)
+    if (!hasDefaultAnnouncement) {
+      announcements.unshift(defaultAnnouncement)
+      saveAnnouncementsToStorage(announcements)
+    }
+    
     // 合并并排序：置顶公告 > 其他公告和提案（按时间倒序）
     const allItems: BulletinItem[] = [
       ...announcements.filter(a => a.isPinned),
@@ -142,7 +164,7 @@ export default function BulletinList({ onCreateBulletin }: BulletinListProps) {
     const proposal = proposals[proposalIndex]
     
     if (new Date(proposal.votingDeadline) < new Date()) {
-      alert('投票已截止')
+      showWarning('投票已截止', '提示')
       return
     }
 

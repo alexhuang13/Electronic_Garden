@@ -1,0 +1,494 @@
+/* 遮罩层 */
+.notification-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.notification-modal-overlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.notification-modal-overlay.closing {
+  opacity: 0;
+}
+
+/* 模态框容器 */
+.notification-modal {
+  position: relative;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  border-radius: 24px;
+  padding: 40px 36px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 0 80px rgba(138, 43, 226, 0.2);
+  transform: scale(0.8) translateY(20px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.notification-modal.visible {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  pointer-events: all;
+  animation: modalBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.notification-modal.closing {
+  transform: scale(0.9) translateY(-20px);
+  opacity: 0;
+}
+
+@keyframes modalBounce {
+  0% {
+    transform: scale(0.7) translateY(30px);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05) translateY(-5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 背景装饰 */
+.notification-modal-bg-decoration {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+  animation: rotateBg 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateBg {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 不同类型样式 */
+.notification-modal-reward {
+  background: linear-gradient(135deg, #fff5f5 0%, #ffeef0 50%, #fff0f5 100%);
+  box-shadow: 
+    0 20px 60px rgba(255, 20, 147, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+    0 0 100px rgba(255, 105, 180, 0.3);
+}
+
+.notification-modal-success {
+  background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 50%, #f0fff4 100%);
+  box-shadow: 
+    0 20px 60px rgba(34, 197, 94, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+    0 0 100px rgba(34, 197, 94, 0.2);
+}
+
+.notification-modal-error {
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 50%, #fff5f5 100%);
+  box-shadow: 
+    0 20px 60px rgba(239, 68, 68, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+    0 0 100px rgba(239, 68, 68, 0.2);
+}
+
+.notification-modal-warning {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fffbeb 100%);
+  box-shadow: 
+    0 20px 60px rgba(245, 158, 11, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+    0 0 100px rgba(245, 158, 11, 0.2);
+}
+
+.notification-modal-info {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #eff6ff 100%);
+  box-shadow: 
+    0 20px 60px rgba(59, 130, 246, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+    0 0 100px rgba(59, 130, 246, 0.2);
+}
+
+/* 内容区域 */
+.notification-modal-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+/* 图标 */
+.notification-modal-icon {
+  position: relative;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.notification-icon-emoji {
+  font-size: 64px;
+  display: inline-block;
+  animation: iconPulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* 闪烁效果 */
+.notification-sparkles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  font-size: 20px;
+  animation: sparkleFloat 2s ease-in-out infinite;
+  opacity: 0.8;
+}
+
+.sparkle-1 {
+  top: 10%;
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.sparkle-2 {
+  top: 20%;
+  right: 15%;
+  animation-delay: 0.5s;
+}
+
+.sparkle-3 {
+  bottom: 15%;
+  left: 25%;
+  animation-delay: 1s;
+}
+
+.sparkle-4 {
+  bottom: 10%;
+  right: 20%;
+  animation-delay: 1.5s;
+}
+
+@keyframes sparkleFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(10px, -10px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* 标题 */
+.notification-modal-title {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #8a2be2 0%, #ff1493 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 16px 0;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(138, 43, 226, 0.2);
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+}
+
+/* 消息 */
+.notification-modal-message {
+  font-size: 18px;
+  color: #2d2d2d;
+  margin: 0 0 24px 0;
+  line-height: 1.7;
+  white-space: pre-line;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* 奖励区域 */
+.notification-rewards {
+  margin: 24px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+/* 徽章项 */
+.notification-badge-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 192, 203, 0.15) 100%);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  animation: badgeSlideIn 0.5s ease-out;
+}
+
+@keyframes badgeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.badge-icon-large {
+  font-size: 48px;
+  animation: badgeBounce 1s ease-in-out infinite;
+}
+
+@keyframes badgeBounce {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(-5deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(5deg);
+  }
+}
+
+.badge-info {
+  text-align: left;
+}
+
+.badge-label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.badge-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* 奖励项 */
+.notification-reward-items {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+
+.reward-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 192, 203, 0.2) 100%);
+  border-radius: 12px;
+  animation: rewardPop 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.reward-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.reward-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+@keyframes rewardPop {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.reward-icon {
+  font-size: 24px;
+  animation: iconSpin 2s linear infinite;
+}
+
+@keyframes iconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.reward-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* 升级提示 */
+.notification-levelup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.15) 0%, rgba(255, 20, 147, 0.15) 100%);
+  border-radius: 12px;
+  margin-top: 16px;
+  animation: levelUpGlow 2s ease-in-out infinite;
+}
+
+@keyframes levelUpGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 20, 147, 0.5);
+  }
+}
+
+.levelup-icon {
+  font-size: 40px;
+  animation: levelUpBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes levelUpBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.1);
+  }
+}
+
+.levelup-content {
+  text-align: left;
+}
+
+.levelup-label {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.levelup-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.levelup-level {
+  font-size: 20px;
+  font-weight: 700;
+  color: #8a2be2;
+  background: rgba(138, 43, 226, 0.1);
+  padding: 4px 12px;
+  border-radius: 8px;
+}
+
+.levelup-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* 关闭按钮 */
+.notification-modal-close-btn {
+  margin-top: 24px;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #8a2be2 0%, #ff1493 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
+  min-width: 120px;
+}
+
+.notification-modal-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(138, 43, 226, 0.4);
+}
+
+.notification-modal-close-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(138, 43, 226, 0.3);
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .notification-modal {
+    padding: 32px 24px;
+    max-width: 90%;
+  }
+
+  .notification-icon-emoji {
+    font-size: 48px;
+  }
+
+  .notification-modal-title {
+    font-size: 20px;
+  }
+
+  .notification-modal-message {
+    font-size: 14px;
+  }
+
+  .badge-icon-large {
+    font-size: 40px;
+  }
+
+  .notification-reward-items {
+    gap: 12px;
+  }
+
+  .reward-item {
+    padding: 10px 16px;
+  }
+}
+

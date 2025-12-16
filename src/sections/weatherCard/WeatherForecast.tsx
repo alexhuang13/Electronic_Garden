@@ -22,7 +22,7 @@ function getWeatherIcon(condition: string): string {
 }
 
 // 获取日期显示文本
-function getDateLabel(date: Date, index: number): string {
+function getDateLabel(date: Date): string {
   const month = date.getMonth() + 1
   const day = date.getDate()
   return `${month}月${day}日`
@@ -92,7 +92,7 @@ export default function WeatherForecast() {
         {forecast.map((day, index) => {
           const date = new Date(day.date)
           const icon = getWeatherIcon(day.condition)
-          const dateLabel = getDateLabel(date, index)
+          const dateLabel = getDateLabel(date)
           
           // 计算温度条的位置和长度
           const barStart = ((day.temperature.min - minTemp) / tempRange) * 100

@@ -20,7 +20,6 @@ export default function PlotCard({ plot, onClick, onApplyResponsibility, onEdit,
   const [showEditForm, setShowEditForm] = useState(false)
   const [showDetailModal, setShowDetailModal] = useState(false)
   const currentUserId = 'currentUser'
-  const currentUserName = localStorage.getItem('profileName') || '花园守护者'
   
   // 获取负责人名称
   const getResponsiblePersonName = () => {

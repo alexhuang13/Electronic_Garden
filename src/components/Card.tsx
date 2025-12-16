@@ -1,3 +1,4 @@
+import React from 'react'
 import './Card.css'
 
 /**
@@ -7,7 +8,7 @@ import './Card.css'
 interface CardProps {
   children: React.ReactNode
   title?: string
-  onClick?: () => void
+  onClick?: (e?: React.MouseEvent<HTMLDivElement>) => void
   className?: string
 }
 

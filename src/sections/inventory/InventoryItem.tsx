@@ -11,7 +11,7 @@ interface InventoryItemProps {
   onGift: () => void
 }
 
-export default function InventoryItem({ id, name, icon, count, onUse, onGift }: InventoryItemProps) {
+export default function InventoryItem({ name, icon, count, onUse, onGift }: InventoryItemProps) {
   const [showActions, setShowActions] = useState(false)
 
   if (count === 0) {
