@@ -4,7 +4,6 @@ import Card from '@components/Card'
 import InventoryItem from '@sections/inventory/InventoryItem'
 import FriendSelectModal from '@sections/inventory/FriendSelectModal'
 import { getAllBadges, incrementGiftCount } from '@modules/badgeManager'
-import { showSuccess, showWarning, showError } from '../utils/notification'
 import '@styles/pages.css'
 import './Profile.css'
 
@@ -360,15 +359,12 @@ export default function Profile() {
     const currentNameCards = parseInt(localStorage.getItem('nameCards') || '0', 10)
     
     if (currentNameCards <= 0) {
-      showWarning('您没有改名卡！前往商城购买改名卡（1000⭐）', '提示')
-      setTimeout(() => {
-        navigate('/recharge')
-      }, 2000)
+      alert('您没有改名卡！前往商城购买改名卡（1000⭐）')
+      navigate('/recharge')
       return
     }
 
-    // 使用自定义输入框（简化版，实际项目中可以创建更美观的输入弹窗）
-    const newName = window.prompt('请输入新名字（最多20个字符）：', profileData.name)
+    const newName = prompt('请输入新名字（最多20个字符）：', profileData.name)
     
     if (!newName) {
       return
@@ -376,12 +372,12 @@ export default function Profile() {
 
     const trimmedName = newName.trim()
     if (!trimmedName) {
-      showError('名字不能为空！', '错误')
+      alert('名字不能为空！')
       return
     }
 
     if (trimmedName.length > 20) {
-      showError('名字不能超过20个字符！', '错误')
+      alert('名字不能超过20个字符！')
       return
     }
 
@@ -396,12 +392,12 @@ export default function Profile() {
       name: trimmedName,
     }))
 
-    showSuccess('改名成功！', '成功')
+    alert('改名成功！')
   }
 
   // 处理修改地点
   const handleChangeLocation = () => {
-    const newLocation = window.prompt('请输入地点（城市名称）：', location)
+    const newLocation = prompt('请输入地点（城市名称）：', location)
     
     if (!newLocation) {
       return
@@ -409,7 +405,7 @@ export default function Profile() {
 
     const trimmedLocation = newLocation.trim()
     if (!trimmedLocation) {
-      showError('地点不能为空！', '错误')
+      alert('地点不能为空！')
       return
     }
 
@@ -421,7 +417,7 @@ export default function Profile() {
       detail: { location: trimmedLocation } 
     }))
 
-    showSuccess('地点已更新！天气信息将刷新', '成功')
+    alert('地点已更新！天气信息将刷新')
   }
 
   // 处理使用物品
@@ -430,7 +426,7 @@ export default function Profile() {
     if (itemId === 'nameCard') {
       const currentCount = parseInt(localStorage.getItem('nameCards') || '0', 10)
       if (currentCount <= 0) {
-        showWarning('改名卡数量不足！', '提示')
+        alert('改名卡数量不足！')
         return
       }
       // 改名卡的使用逻辑已经在 handleChangeName 中处理
@@ -440,7 +436,7 @@ export default function Profile() {
 
     const currentCount = parseInt(localStorage.getItem(`shopItem_${itemId}`) || '0', 10)
     if (currentCount <= 0) {
-      showWarning('物品数量不足！', '提示')
+      alert('物品数量不足！')
       return
     }
 

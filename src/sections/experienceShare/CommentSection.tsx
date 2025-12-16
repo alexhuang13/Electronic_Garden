@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Comment, ID } from '@core/types'
+import { Comment } from '@core/types'
 import './CommentSection.css'
 
 /**
@@ -7,7 +7,6 @@ import './CommentSection.css'
  */
 
 interface CommentSectionProps {
-  experienceId: ID
   comments: Comment[]
   onAddComment: (content: string) => void
 }

@@ -1,4 +1,5 @@
 import { Plot, Badge } from '@core/types'
+import { getAllBadges } from '@modules/badgeManager'
 import './ResponsiblePersonCard.css'
 
 interface ResponsiblePersonCardProps {
@@ -10,19 +11,49 @@ interface ResponsiblePersonCardProps {
  * 显示负责人的等级和徽章
  */
 export default function ResponsiblePersonCard({ plot }: ResponsiblePersonCardProps) {
-  const responsiblePerson = plot.responsiblePerson
-  const hasResponsiblePerson = !!responsiblePerson
-
-  // 获取等级显示信息
-  const getLevelInfo = (level: number) => {
-    if (level >= 20) return { label: '大师', color: '#dc2626', icon: '👑' }
-    if (level >= 15) return { label: '专家', color: '#f59e0b', icon: '⭐' }
-    if (level >= 10) return { label: '高级', color: '#10b981', icon: '🌟' }
-    if (level >= 5) return { label: '中级', color: '#3b82f6', icon: '🌱' }
-    return { label: '初级', color: '#6b7280', icon: '🌿' }
+  const currentUserId = 'currentUser'
+  const currentUserName = localStorage.getItem('profileName') || '花园守护者'
+  const currentUserLevel = parseInt(localStorage.getItem('profileLevel') || '5', 10)
+  
+  // 判断是否是当前用户负责的地块
+  const isCurrentUserResponsible = plot.assignedTo === currentUserId
+  
+  // 如果是当前用户负责，使用当前用户信息；否则使用地块的负责人信息
+  let responsiblePerson = plot.responsiblePerson
+  
+  if (isCurrentUserResponsible) {
+    // 获取当前用户的徽章
+    const allBadges = getAllBadges()
+    const currentUserBadges = allBadges
+      .filter(badge => badge.earned)
+      .map(badge => {
+        // badgeManager 中的 Badge 使用 earnedDate?: string
+        // 但 core/types 中的 Badge 使用 earnedDate: Date
+        const earnedDate = badge.earnedDate 
+          ? (typeof badge.earnedDate === 'string' ? new Date(badge.earnedDate) : badge.earnedDate)
+          : new Date()
+        return {
+          id: badge.id,
+          name: badge.name,
+          icon: badge.icon,
+          description: badge.description,
+          earned: badge.earned,
+          earnedDate: earnedDate,
+        } as Badge
+      })
+    
+    // 使用当前用户信息
+    responsiblePerson = {
+      id: currentUserId,
+      name: currentUserName,
+      level: currentUserLevel,
+      badges: currentUserBadges,
+      avatar: undefined,
+    }
   }
-
-  if (!hasResponsiblePerson) {
+  
+  // 如果仍然没有负责人信息，提前返回
+  if (!responsiblePerson) {
     return (
       <div className="responsible-person-card empty">
         <div className="responsible-card-header">
@@ -35,6 +66,15 @@ export default function ResponsiblePersonCard({ plot }: ResponsiblePersonCardPro
         </div>
       </div>
     )
+  }
+
+  // 获取等级显示信息
+  const getLevelInfo = (level: number) => {
+    if (level >= 20) return { label: '大师', color: '#dc2626', icon: '👑' }
+    if (level >= 15) return { label: '专家', color: '#f59e0b', icon: '⭐' }
+    if (level >= 10) return { label: '高级', color: '#10b981', icon: '🌟' }
+    if (level >= 5) return { label: '中级', color: '#3b82f6', icon: '🌱' }
+    return { label: '初级', color: '#6b7280', icon: '🌿' }
   }
 
   const levelInfo = getLevelInfo(responsiblePerson.level)

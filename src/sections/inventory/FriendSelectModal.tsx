@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Card from '@components/Card'
 import './FriendSelectModal.css'
 
@@ -44,7 +44,7 @@ export default function FriendSelectModal({ itemName, onSelect, onClose }: Frien
 
   return (
     <div className="friend-select-overlay" onClick={onClose}>
-      <Card className="friend-select-modal" onClick={(e?: React.MouseEvent<HTMLDivElement>) => e?.stopPropagation()}>
+      <Card className="friend-select-modal" onClick={(e?: React.MouseEvent) => e?.stopPropagation()}>
         <div className="friend-select-header">
           <h3 className="friend-select-title">选择要赠送的好友</h3>
           <button className="friend-select-close" onClick={onClose}>×</button>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BulletinItem, Announcement, Proposal, ProposalCategory, ID } from '@core/types'
 import Card from '@components/Card'
-import { showWarning } from '../../utils/notification'
 import './BulletinList.css'
 
 /**
@@ -29,33 +28,57 @@ const statusLabels: Record<Proposal['status'], string> = {
   implemented: '已实施',
 }
 
-const priorityLabels: Record<NonNullable<Announcement['priority']>, { label: string; icon: string; color: string }> = {
+const priorityLabels: Record<'normal' | 'important' | 'urgent', { label: string; icon: string; color: string }> = {
   normal: { label: '普通', icon: '📌', color: '#6b7280' },
   important: { label: '重要', icon: '⚠️', color: '#f59e0b' },
   urgent: { label: '紧急', icon: '🚨', color: '#ef4444' },
 }
 
+// 获取默认公告（社区会议通知）
+const getDefaultAnnouncement = (): Announcement => ({
+  id: 'default-announcement-1',
+  title: '社区会议通知',
+  content: '本周社区会议将于周六下午 2 点举行，欢迎参加！',
+  publishedBy: 'system',
+  publishedByName: '系统',
+  type: 'announcement',
+  priority: 'important',
+  isPinned: true,
+  createdAt: new Date(),
+})
+
 // 从localStorage加载公告
 const loadAnnouncementsFromStorage = (): Announcement[] => {
   const saved = localStorage.getItem('userAnnouncements')
+  let announcements: Announcement[] = []
+  
   if (saved) {
     try {
       const parsed = JSON.parse(saved)
-      return parsed.map((announcement: any) => ({
+      announcements = parsed.map((announcement: any) => ({
         ...announcement,
         createdAt: announcement.createdAt ? new Date(announcement.createdAt) : new Date(),
       }))
     } catch (e) {
-      return []
+      announcements = []
     }
   }
-  return []
+  
+  // 如果没有公告，或者没有默认的社区会议公告，则添加默认公告
+  const hasDefaultAnnouncement = announcements.some(a => a.id === 'default-announcement-1')
+  if (!hasDefaultAnnouncement) {
+    announcements = [getDefaultAnnouncement(), ...announcements]
+    // 保存到localStorage
+    localStorage.setItem('userAnnouncements', JSON.stringify(announcements))
+  }
+  
+  return announcements
 }
 
-// 保存公告到localStorage
-const saveAnnouncementsToStorage = (announcements: Announcement[]) => {
-  localStorage.setItem('userAnnouncements', JSON.stringify(announcements))
-}
+// 保存公告到localStorage（未使用，保留以备将来使用）
+// const saveAnnouncementsToStorage = (announcements: Announcement[]) => {
+//   localStorage.setItem('userAnnouncements', JSON.stringify(announcements))
+// }
 
 // 从localStorage加载提案
 const loadProposalsFromStorage = (): Proposal[] => {
@@ -88,27 +111,6 @@ export default function BulletinList({ onCreateBulletin }: BulletinListProps) {
   const loadItems = () => {
     const announcements = loadAnnouncementsFromStorage()
     const proposals = loadProposalsFromStorage()
-    
-    // 添加默认公告（如果不存在）
-    const defaultAnnouncement: Announcement = {
-      id: 'default-community-meeting',
-      type: 'announcement',
-      title: '社区会议通知',
-      content: '本周社区会议将于周六下午2点举行，欢迎参加！',
-      publishedBy: 'system',
-      publishedByName: '系统管理员',
-      priority: 'important',
-      isPinned: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-    
-    // 检查是否已存在默认公告
-    const hasDefaultAnnouncement = announcements.some(a => a.id === defaultAnnouncement.id)
-    if (!hasDefaultAnnouncement) {
-      announcements.unshift(defaultAnnouncement)
-      saveAnnouncementsToStorage(announcements)
-    }
     
     // 合并并排序：置顶公告 > 其他公告和提案（按时间倒序）
     const allItems: BulletinItem[] = [
@@ -164,7 +166,7 @@ export default function BulletinList({ onCreateBulletin }: BulletinListProps) {
     const proposal = proposals[proposalIndex]
     
     if (new Date(proposal.votingDeadline) < new Date()) {
-      showWarning('投票已截止', '提示')
+      alert('投票已截止')
       return
     }
 
@@ -363,4 +365,5 @@ export default function BulletinList({ onCreateBulletin }: BulletinListProps) {
     </div>
   )
 }
+
 

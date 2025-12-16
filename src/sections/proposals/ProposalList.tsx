@@ -33,25 +33,11 @@ const loadProposalsFromStorage = (): Proposal[] => {
   if (savedProposals) {
     try {
       const parsed = JSON.parse(savedProposals)
-      const proposals = parsed.map((proposal: any) => ({
+      return parsed.map((proposal: any) => ({
         ...proposal,
         votingDeadline: new Date(proposal.votingDeadline),
         createdAt: proposal.createdAt ? new Date(proposal.createdAt) : new Date(),
       }))
-      
-      // 过滤掉包含"削减美国军事经费"的提案
-      const filteredProposals = proposals.filter((proposal: Proposal) => {
-        const title = proposal.title || ''
-        const description = proposal.description || ''
-        return !title.includes('削减美国军事经费') && !description.includes('削减美国军事经费')
-      })
-      
-      // 如果过滤后的数量不同，保存更新后的数据
-      if (filteredProposals.length !== proposals.length) {
-        saveProposalsToStorage(filteredProposals)
-      }
-      
-      return filteredProposals
     } catch (e) {
       return []
     }
@@ -143,6 +129,7 @@ export default function ProposalList({ onCreateProposal }: ProposalListProps) {
     // 检查是否达到所需票数
     const approveCount = proposal.votes.filter(v => v.choice === 'approve').length
     const rejectCount = proposal.votes.filter(v => v.choice === 'reject').length
+    // const totalVotes = proposal.votes.length // 未使用
 
     // 如果赞成票达到所需票数，自动通过
     if (approveCount >= proposal.requiredVotes && proposal.status === 'voting') {

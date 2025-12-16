@@ -1,4 +1,3 @@
-import React from 'react'
 import './Card.css'
 
 /**
@@ -8,13 +7,14 @@ import './Card.css'
 interface CardProps {
   children: React.ReactNode
   title?: string
-  onClick?: (e?: React.MouseEvent<HTMLDivElement>) => void
+  onClick?: (e?: React.MouseEvent) => void
   className?: string
+  style?: React.CSSProperties
 }
 
-export default function Card({ children, title, onClick, className = '' }: CardProps) {
+export default function Card({ children, title, onClick, className = '', style }: CardProps) {
   return (
-    <div className={`card ${className}`} onClick={onClick}>
+    <div className={`card ${className}`} onClick={onClick} style={style}>
       {title && <h3 className="card-title">{title}</h3>}
       <div className="card-content">{children}</div>
     </div>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Plot, ID } from '@core/types'
 import { incrementAdoptedPlotsCount } from '@modules/badgeManager'
-import { getTopThreeUsers } from '../../utils/leaderboard'
 
 /**
  * PlotCardList 业务逻辑 Hook
@@ -40,112 +39,124 @@ const savePlotsToStorage = (plots: Plot[]) => {
   localStorage.setItem('gardenPlots', JSON.stringify(plots))
 }
 
-// 获取默认地块数据（使用排行榜前三名作为负责人）
-const getDefaultPlots = (): Plot[] => {
-  // 获取排行榜前三名
-  const topThree = getTopThreeUsers()
-  
-  // 基础地块数据
-  const basePlots: Omit<Plot, 'assignedTo' | 'assignedToName' | 'responsiblePerson'>[] = [
-    {
-      id: 1,
-      name: '地块 A1',
-      position: { x: 0, y: 0 },
-      size: { width: 2, height: 3 },
-      status: 'growing',
-      crops: [
-        {
-          id: 101,
-          name: '番茄',
-          plantedDate: new Date('2025-11-01'),
-          expectedHarvestDate: new Date('2025-12-25'),
-          growthProgress: 65,
-          waterLevel: 80,
-          healthStatus: 'healthy',
-        },
+// 获取默认地块数据
+const getDefaultPlots = (): Plot[] => [
+  {
+    id: 1,
+    name: '地块 A1',
+    position: { x: 0, y: 0 },
+    size: { width: 2, height: 3 },
+    status: 'growing',
+    crops: [
+      {
+        id: 101,
+        name: '番茄',
+        plantedDate: new Date('2025-11-01'),
+        expectedHarvestDate: new Date('2025-12-25'),
+        growthProgress: 65,
+        waterLevel: 80,
+        healthStatus: 'healthy',
+      },
+    ],
+    soilCondition: {
+      fertility: 75,
+      droughtLevel: 25,
+    },
+    assignedTo: 'user1',
+    assignedToName: '刘浩然',
+    responsiblePerson: {
+      id: 'user1',
+      name: '刘浩然',
+      level: 9,
+      badges: [
+        { id: 'b1', name: '种植达人', icon: '🌱', description: '成功种植10种植物', earnedDate: new Date('2025-10-01') },
+        { id: 'b2', name: '浇水专家', icon: '💧', description: '累计浇水100次', earnedDate: new Date('2025-10-15') },
+        { id: 'b3', name: '收获大师', icon: '🌾', description: '收获50次作物', earnedDate: new Date('2025-11-01') },
       ],
-      soilCondition: {
-        fertility: 75,
-        droughtLevel: 25,
-      },
     },
-    {
-      id: 2,
-      name: '地块 A2',
-      position: { x: 2, y: 0 },
-      size: { width: 2, height: 3 },
-      status: 'needsWater',
-      crops: [
-        {
-          id: 102,
-          name: '生菜',
-          plantedDate: new Date('2025-11-10'),
-          expectedHarvestDate: new Date('2025-12-20'),
-          growthProgress: 45,
-          waterLevel: 30,
-          healthStatus: 'needsWater',
-        },
+  },
+  {
+    id: 2,
+    name: '地块 A2',
+    position: { x: 2, y: 0 },
+    size: { width: 2, height: 3 },
+    status: 'needsWater',
+    crops: [
+      {
+        id: 102,
+        name: '生菜',
+        plantedDate: new Date('2025-11-10'),
+        expectedHarvestDate: new Date('2025-12-20'),
+        growthProgress: 45,
+        waterLevel: 30,
+        healthStatus: 'needsWater',
+      },
+    ],
+    soilCondition: {
+      fertility: 50,
+      droughtLevel: 70,
+    },
+    assignedTo: 'user2',
+    assignedToName: '绿手指',
+    responsiblePerson: {
+      id: 'user2',
+      name: '绿手指',
+      level: 8,
+      badges: [
+        { id: 'b4', name: '新手园丁', icon: '🌿', description: '完成首次种植', earnedDate: new Date('2025-11-01') },
       ],
-      soilCondition: {
-        fertility: 50,
-        droughtLevel: 70,
-      },
     },
-    {
-      id: 3,
-      name: '地块 B1',
-      position: { x: 0, y: 3 },
-      size: { width: 2, height: 3 },
-      status: 'ready',
-      crops: [
-        {
-          id: 103,
-          name: '萝卜',
-          plantedDate: new Date('2025-10-15'),
-          expectedHarvestDate: new Date('2025-12-15'),
-          growthProgress: 100,
-          waterLevel: 70,
-          healthStatus: 'healthy',
-        },
+  },
+  {
+    id: 3,
+    name: '地块 B1',
+    position: { x: 0, y: 3 },
+    size: { width: 2, height: 3 },
+    status: 'ready',
+    crops: [
+      {
+        id: 103,
+        name: '萝卜',
+        plantedDate: new Date('2025-10-15'),
+        expectedHarvestDate: new Date('2025-12-15'),
+        growthProgress: 100,
+        waterLevel: 70,
+        healthStatus: 'healthy',
+      },
+    ],
+    soilCondition: {
+      fertility: 85,
+      droughtLevel: 15,
+    },
+    assignedTo: 'user3',
+    assignedToName: '植物专家',
+    responsiblePerson: {
+      id: 'user3',
+      name: '植物专家',
+      level: 7,
+      badges: [
+        { id: 'b5', name: '种植达人', icon: '🌱', description: '成功种植10种植物', earnedDate: new Date('2025-09-01') },
+        { id: 'b6', name: '浇水专家', icon: '💧', description: '累计浇水100次', earnedDate: new Date('2025-09-15') },
+        { id: 'b7', name: '收获大师', icon: '🌾', description: '收获50次作物', earnedDate: new Date('2025-10-01') },
+        { id: 'b8', name: '社区贡献者', icon: '🏆', description: '参与10次社区活动', earnedDate: new Date('2025-10-20') },
+        { id: 'b9', name: '知识分享', icon: '📚', description: '分享5篇种植经验', earnedDate: new Date('2025-11-01') },
+        { id: 'b10', name: '环保先锋', icon: '🌍', description: '使用有机肥料50次', earnedDate: new Date('2025-11-15') },
       ],
-      soilCondition: {
-        fertility: 85,
-        droughtLevel: 15,
-      },
     },
-    {
-      id: 4,
-      name: '地块 B2',
-      position: { x: 2, y: 3 },
-      size: { width: 2, height: 3 },
-      status: 'empty',
-      crops: [],
-      soilCondition: {
-        fertility: 40,
-        droughtLevel: 60,
-      },
+  },
+  {
+    id: 4,
+    name: '地块 B2',
+    position: { x: 2, y: 3 },
+    size: { width: 2, height: 3 },
+    status: 'empty',
+    crops: [],
+    soilCondition: {
+      fertility: 40,
+      droughtLevel: 60,
     },
-  ]
-
-  // 为前三个地块分配排行榜前三名作为负责人
-  return basePlots.map((plot, index) => {
-    if (index < 3 && topThree[index]) {
-      const topUser = topThree[index]
-      return {
-        ...plot,
-        assignedTo: `user_${topUser.name}_${topUser.rank}`,
-        assignedToName: topUser.name,
-        responsiblePerson: {
-          id: `user_${topUser.name}_${topUser.rank}`,
-          name: topUser.name,
-          level: topUser.level,
-          badges: [], // 可以根据需要添加徽章
-        },
-      } as Plot
-    }
-    return plot as Plot
-  })
-}
+  },
+]
 
 export function usePlotCardList(filter: 'all' | 'myPlots' = 'all'): UsePlotCardListReturn {
   const [allPlots, setAllPlots] = useState<Plot[]>([])

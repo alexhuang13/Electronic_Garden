@@ -1,10 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Card from '@components/Card'
 import './CreateTaskForm.css'
-
-/**
- * 发布任务表单组件
- */
 
 interface CreateTaskFormProps {
   onClose: () => void
@@ -27,7 +23,7 @@ export default function CreateTaskForm({ onClose, onSubmit }: CreateTaskFormProp
     const newErrors: Record<string, string> = {}
 
     if (!title.trim()) {
-      newErrors.title = '请输入任务名称'
+      newErrors.title = '请输入任务标题'
     }
 
     if (!description.trim()) {
@@ -35,13 +31,16 @@ export default function CreateTaskForm({ onClose, onSubmit }: CreateTaskFormProp
     }
 
     if (!dueDate) {
-      newErrors.dueDate = '请选择截止时间'
-    } else if (new Date(dueDate) < new Date()) {
-      newErrors.dueDate = '截止时间不能早于当前时间'
+      newErrors.dueDate = '请选择截止日期'
+    } else {
+      const selectedDate = new Date(dueDate)
+      if (selectedDate < new Date()) {
+        newErrors.dueDate = '截止日期不能早于今天'
+      }
     }
 
-    if (!reward || parseInt(reward) <= 0) {
-      newErrors.reward = '请输入有效的报酬数量（大于0）'
+    if (!reward || parseInt(reward, 10) <= 0) {
+      newErrors.reward = '请输入有效的奖励金额（大于0）'
     }
 
     setErrors(newErrors)
@@ -59,13 +58,16 @@ export default function CreateTaskForm({ onClose, onSubmit }: CreateTaskFormProp
       title: title.trim(),
       description: description.trim(),
       dueDate: new Date(dueDate),
-      reward: parseInt(reward),
+      reward: parseInt(reward, 10),
     })
   }
 
   return (
     <div className="create-task-overlay" onClick={onClose}>
-      <Card className="create-task-form-card" onClick={(e?: React.MouseEvent<HTMLDivElement>) => e?.stopPropagation()}>
+      <Card 
+        className="create-task-form-card" 
+        onClick={(e?: React.MouseEvent) => e?.stopPropagation()}
+      >
         <div className="create-task-form-header">
           <h3 className="create-task-form-title">发布任务</h3>
           <button className="create-task-form-close" onClick={onClose}>×</button>
@@ -74,16 +76,18 @@ export default function CreateTaskForm({ onClose, onSubmit }: CreateTaskFormProp
         <form onSubmit={handleSubmit} className="create-task-form">
           <div className="create-task-form-group">
             <label className="create-task-form-label">
-              任务名称 <span className="required">*</span>
+              任务标题 <span className="required">*</span>
             </label>
             <input
               type="text"
               className={`create-task-form-input ${errors.title ? 'error' : ''}`}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="请输入任务名称"
+              placeholder="请输入任务标题"
             />
-            {errors.title && <span className="create-task-form-error">{errors.title}</span>}
+            {errors.title && (
+              <span className="create-task-form-error">{errors.title}</span>
+            )}
           </div>
 
           <div className="create-task-form-group">
@@ -104,13 +108,14 @@ export default function CreateTaskForm({ onClose, onSubmit }: CreateTaskFormProp
 
           <div className="create-task-form-group">
             <label className="create-task-form-label">
-              截止时间 <span className="required">*</span>
+              截止日期 <span className="required">*</span>
             </label>
             <input
-              type="datetime-local"
+              type="date"
               className={`create-task-form-input ${errors.dueDate ? 'error' : ''}`}
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
+              min={new Date().toISOString().split('T')[0]}
             />
             {errors.dueDate && (
               <span className="create-task-form-error">{errors.dueDate}</span>
@@ -119,22 +124,16 @@ export default function CreateTaskForm({ onClose, onSubmit }: CreateTaskFormProp
 
           <div className="create-task-form-group">
             <label className="create-task-form-label">
-              报酬（星星） <span className="required">*</span>
+              奖励（星星） <span className="required">*</span>
             </label>
-            <div className="create-task-form-reward-input">
-              <input
-                type="number"
-                className={`create-task-form-input ${errors.reward ? 'error' : ''}`}
-                value={reward}
-                onChange={(e) => setReward(e.target.value)}
-                placeholder="0"
-                min="1"
-              />
-              <span className="create-task-form-reward-unit">⭐</span>
-            </div>
-            <div className="create-task-form-reward-hint">
-              完成任务将获得 {reward || '0'}⭐ 和 10EXP
-            </div>
+            <input
+              type="number"
+              className={`create-task-form-input ${errors.reward ? 'error' : ''}`}
+              value={reward}
+              onChange={(e) => setReward(e.target.value)}
+              placeholder="请输入奖励金额"
+              min="1"
+            />
             {errors.reward && (
               <span className="create-task-form-error">{errors.reward}</span>
             )}
@@ -153,7 +152,3 @@ export default function CreateTaskForm({ onClose, onSubmit }: CreateTaskFormProp
     </div>
   )
 }
-
-
-
-

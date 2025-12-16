@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { WeatherInfo } from '@core/types'
 import { weatherService } from '@services/weatherService'
+import Card from '@components/Card'
 import './WeatherCard.css'
 
 /**
@@ -71,11 +72,11 @@ export default function WeatherCard() {
 
   if (loading) {
     return (
-      <div className="card weather-card weather-card-loading">
+      <Card className="weather-card weather-card-loading">
         <div className="weather-card-content">
           <div className="weather-loading">加载天气信息中...</div>
         </div>
-      </div>
+      </Card>
     )
   }
 
@@ -87,7 +88,7 @@ export default function WeatherCard() {
   const gradient = getWeatherGradient(weather.condition)
 
   return (
-    <div className="card weather-card" style={{ background: gradient }}>
+    <Card className="weather-card" style={{ background: gradient }}>
       <div className="weather-card-content">
         <div className="weather-card-header">
           <div className="weather-card-location">
@@ -142,7 +143,7 @@ export default function WeatherCard() {
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   )
 }
 

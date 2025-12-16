@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Card from '@components/Card'
 import './CreateExperienceForm.css'
 
@@ -51,7 +51,7 @@ export default function CreateExperienceForm({ onClose, onSubmit }: CreateExperi
 
   return (
     <div className="create-experience-overlay" onClick={onClose}>
-      <Card className="create-experience-form-card" onClick={(e?: React.MouseEvent<HTMLDivElement>) => e?.stopPropagation()}>
+      <Card className="create-experience-form-card" onClick={(e?: React.MouseEvent) => e?.stopPropagation()}>
         <div className="create-experience-form-header">
           <h3 className="create-experience-form-title">发布经验分享</h3>
           <button className="create-experience-form-close" onClick={onClose}>×</button>

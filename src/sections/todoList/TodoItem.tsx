@@ -50,23 +50,15 @@ export default function TodoItem({ task, onClick, onComplete }: TodoItemProps) {
       )}
 
       {task.status !== 'completed' && (
-        <>
-          <div className="todo-item-reward">
-            <span className="todo-item-reward-stars">
-              ⭐ {(task as any)?.reward || 50}
-            </span>
-            <span className="todo-item-reward-exp">⚡ +10EXP</span>
-          </div>
-          <button
-            className="todo-item-complete-btn"
-            onClick={(e) => {
-              e.stopPropagation()
-              onComplete()
-            }}
-          >
-            标记完成
-          </button>
-        </>
+        <button
+          className="todo-item-complete-btn"
+          onClick={(e) => {
+            e.stopPropagation()
+            onComplete()
+          }}
+        >
+          标记完成
+        </button>
       )}
     </div>
   )

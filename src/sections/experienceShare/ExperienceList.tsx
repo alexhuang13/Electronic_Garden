@@ -142,11 +142,10 @@ export default function ExperienceList({ onCreateExperience }: ExperienceListPro
 
           <div className="experience-card-content">{experience.content}</div>
 
-          <CommentSection
-            experienceId={experience.id}
-            comments={experience.comments || []}
-            onAddComment={(content) => handleAddComment(experience.id, content)}
-          />
+            <CommentSection
+              comments={experience.comments || []}
+              onAddComment={(content) => handleAddComment(experience.id, content)}
+            />
         </Card>
       ))}
     </div>
