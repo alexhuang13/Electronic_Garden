@@ -11,6 +11,7 @@ interface UsePlotCardListReturn {
   handlePlotClick: (plotId: ID) => void
   handleApplyResponsibility: (plotId: ID) => void
   handleEditPlot: (plotId: ID, data: { cropName: string; status: Plot['status'] }) => void
+  handleSoilAction: (plotId: ID, action: 'water' | 'fertilize' | 'weed') => void
 }
 
 // 从localStorage加载地块数据
@@ -342,10 +343,82 @@ export function usePlotCardList(filter: 'all' | 'myPlots' = 'all'): UsePlotCardL
     alert('地块信息已更新！植物进度条已重置为0。')
   }
 
+  const handleSoilAction = (plotId: ID, action: 'water' | 'fertilize' | 'weed') => {
+    let updatedPlots = allPlots.map(plot => {
+      if (plot.id === plotId) {
+        const updatedPlot = { ...plot }
+        const existingCrop = plot.crops.length > 0 ? plot.crops[0] : null
+        
+        // 更新土地状态和植物状态
+        if (action === 'water') {
+          // 浇水：降低干旱程度，增加植物水分
+          updatedPlot.soilCondition = {
+            fertility: plot.soilCondition?.fertility ?? 50,
+            droughtLevel: Math.max(0, (plot.soilCondition?.droughtLevel ?? 50) - 30),
+          }
+          if (existingCrop) {
+            updatedPlot.crops = [{
+              ...existingCrop,
+              waterLevel: Math.min(100, (existingCrop.waterLevel ?? 50) + 30),
+              healthStatus: existingCrop.healthStatus === 'needsWater' ? 'healthy' : existingCrop.healthStatus,
+            }]
+          }
+          // 如果状态是 needsWater，改为 growing
+          if (plot.status === 'needsWater') {
+            updatedPlot.status = 'growing'
+          }
+        } else if (action === 'fertilize') {
+          // 施肥：增加土地肥力
+          updatedPlot.soilCondition = {
+            fertility: Math.min(100, (plot.soilCondition?.fertility ?? 50) + 30),
+            droughtLevel: plot.soilCondition?.droughtLevel ?? 50,
+          }
+          if (existingCrop) {
+            updatedPlot.crops = [{
+              ...existingCrop,
+              healthStatus: existingCrop.healthStatus === 'needsFertilizer' ? 'healthy' : existingCrop.healthStatus,
+            }]
+          }
+          // 如果状态是 needsFertilizer，改为 growing
+          if (plot.status === 'needsFertilizer') {
+            updatedPlot.status = 'growing'
+          }
+        } else if (action === 'weed') {
+          // 除草：清除杂草
+          // 如果状态是 needsWeeding，改为 growing
+          if (plot.status === 'needsWeeding') {
+            updatedPlot.status = 'growing'
+          }
+        }
+        
+        return updatedPlot
+      }
+      return plot
+    })
+    
+    // 检查是否有地块进度条满了，自动改为ready
+    updatedPlots = updatePlotsIfNeeded(updatedPlots)
+    
+    setAllPlots(updatedPlots)
+    savePlotsToStorage(updatedPlots)
+    
+    // 触发地块更新事件，通知任务列表更新
+    window.dispatchEvent(new CustomEvent('plotUpdated'))
+    
+    // 显示成功提示
+    const actionNames = {
+      water: '浇水',
+      fertilize: '施肥',
+      weed: '除草',
+    }
+    alert(`${actionNames[action]}成功！`)
+  }
+
   return {
     plots,
     handlePlotClick,
     handleApplyResponsibility,
     handleEditPlot,
+    handleSoilAction,
   }
 }

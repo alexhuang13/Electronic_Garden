@@ -1,15 +1,16 @@
-import { Plot } from '@core/types'
+import { Plot, ID } from '@core/types'
 import './SoilConditionCard.css'
 
 interface SoilConditionCardProps {
   plot: Plot
+  onSoilAction?: (plotId: ID, action: 'water' | 'fertilize' | 'weed') => void
 }
 
 /**
  * 土地情况卡片
  * 显示肥力和干旱情况
  */
-export default function SoilConditionCard({ plot }: SoilConditionCardProps) {
+export default function SoilConditionCard({ plot, onSoilAction }: SoilConditionCardProps) {
   const fertility = plot.soilCondition?.fertility ?? 50
   const droughtLevel = plot.soilCondition?.droughtLevel ?? 50
 
@@ -83,6 +84,33 @@ export default function SoilConditionCard({ plot }: SoilConditionCardProps) {
           </div>
           <div className="soil-progress-text">{droughtLevel}%</div>
         </div>
+
+        {/* 操作按钮 */}
+        {onSoilAction && (
+          <div className="soil-actions">
+            <button
+              className="soil-action-btn soil-action-water"
+              onClick={() => onSoilAction(plot.id, 'water')}
+              title="浇水：降低干旱程度，增加植物水分"
+            >
+              💧 浇水
+            </button>
+            <button
+              className="soil-action-btn soil-action-fertilize"
+              onClick={() => onSoilAction(plot.id, 'fertilize')}
+              title="施肥：增加土地肥力"
+            >
+              🌿 施肥
+            </button>
+            <button
+              className="soil-action-btn soil-action-weed"
+              onClick={() => onSoilAction(plot.id, 'weed')}
+              title="除草：清除杂草"
+            >
+              🌱 除草
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

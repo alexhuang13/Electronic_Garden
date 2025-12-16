@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plot } from '@core/types'
+import { Plot, ID } from '@core/types'
 import EditPlotForm from './EditPlotForm'
 import PlotDetailModal from './PlotDetailModal'
 import './PlotCard.css'
@@ -13,10 +13,11 @@ interface PlotCardProps {
   onClick: () => void
   onApplyResponsibility?: () => void
   onEdit?: (plotId: number, data: { cropName: string; status: Plot['status'] }) => void
+  onSoilAction?: (plotId: ID, action: 'water' | 'fertilize' | 'weed') => void
   showEditButton?: boolean
 }
 
-export default function PlotCard({ plot, onClick, onApplyResponsibility, onEdit, showEditButton = false }: PlotCardProps) {
+export default function PlotCard({ plot, onClick, onApplyResponsibility, onEdit, onSoilAction, showEditButton = false }: PlotCardProps) {
   const [showEditForm, setShowEditForm] = useState(false)
   const [showDetailModal, setShowDetailModal] = useState(false)
   const currentUserId = 'currentUser'
@@ -154,6 +155,7 @@ export default function PlotCard({ plot, onClick, onApplyResponsibility, onEdit,
         <PlotDetailModal
           plot={plot}
           onClose={() => setShowDetailModal(false)}
+          onSoilAction={onSoilAction}
         />
       )}
 

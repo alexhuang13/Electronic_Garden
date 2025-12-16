@@ -12,7 +12,7 @@ interface PlotCardListProps {
 }
 
 export default function PlotCardList({ filter = 'all' }: PlotCardListProps) {
-  const { plots, handlePlotClick, handleApplyResponsibility, handleEditPlot } = usePlotCardList(filter)
+  const { plots, handlePlotClick, handleApplyResponsibility, handleEditPlot, handleSoilAction } = usePlotCardList(filter)
   const showEditButton = filter === 'myPlots' // 只在"我的地块"部分显示编辑按钮
 
   return (
@@ -25,6 +25,7 @@ export default function PlotCardList({ filter = 'all' }: PlotCardListProps) {
             onClick={() => handlePlotClick(plot.id)}
             onApplyResponsibility={() => handleApplyResponsibility(plot.id)}
             onEdit={handleEditPlot}
+            onSoilAction={handleSoilAction}
             showEditButton={showEditButton}
           />
         ))

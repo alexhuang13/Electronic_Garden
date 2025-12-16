@@ -1,4 +1,4 @@
-import { Plot } from '@core/types'
+import { Plot, ID } from '@core/types'
 import SoilConditionCard from './SoilConditionCard'
 import PlantStatusCard from './PlantStatusCard'
 import ResponsiblePersonCard from './ResponsiblePersonCard'
@@ -7,13 +7,14 @@ import './PlotDetailModal.css'
 interface PlotDetailModalProps {
   plot: Plot | null
   onClose: () => void
+  onSoilAction?: (plotId: ID, action: 'water' | 'fertilize' | 'weed') => void
 }
 
 /**
  * 地块详情模态框
  * 显示土地情况、植物情况和负责人信息三张卡片
  */
-export default function PlotDetailModal({ plot, onClose }: PlotDetailModalProps) {
+export default function PlotDetailModal({ plot, onClose, onSoilAction }: PlotDetailModalProps) {
   if (!plot) return null
 
   const getStatusEmoji = (status: Plot['status']) => {
@@ -63,7 +64,7 @@ export default function PlotDetailModal({ plot, onClose }: PlotDetailModalProps)
 
         {/* 三张详细信息卡片 */}
         <div className="plot-detail-modal-content">
-          <SoilConditionCard plot={plot} />
+          <SoilConditionCard plot={plot} onSoilAction={onSoilAction} />
           <PlantStatusCard plot={plot} />
           <ResponsiblePersonCard plot={plot} />
         </div>
